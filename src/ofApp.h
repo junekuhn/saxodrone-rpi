@@ -1,6 +1,11 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofxMidi.h"
+#include "ofxOSC.h"
+
+# define GLOVER 5678
+# define GLOVE 8001
 
 class ofApp : public ofBaseApp{
 	public:
@@ -19,4 +24,13 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
+
+		ofxOscReceiver rx;
+		ofxMidiOut midiOut;
+		int channel;
+		unsigned int currentPgm;
+		int note, velocity;
+		int pan, bend, touch, polytouch;
+
+
 };
