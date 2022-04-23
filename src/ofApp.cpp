@@ -1,5 +1,41 @@
 #include "ofApp.h"
+#include <math.h>
 
+using namespace glm;
+
+//todo
+/*
+figure out how to save and load the gesture data
+ - save the trained model
+ - each example is a vector of doubles
+ - this may be difficult
+set it up on rpi
+- get a keyboard and mouse
+- make sure everything works that I was able to do on mac
+- headless mode (load a saved model, or use the keyboard to train the gestures)
+playtest with saxophone
+set up channel switching - optional
+set up mercury 7 controls
+
+
+
+// mapping ideas
+holding the button down - which page
+changing cc params
+6 gestures - fist, open hand, one finger point, climber, puppet, two finger point
+page 1 - pitch, filter, mix, sus, env, mod
+page 2 - alt params
+page 3 - exp, env type, tempo, synth mode, channel?, program?
+
+change channel, what is the cc going to be ???
+
+
+refactoring!!
+
+ - glove stuff to its own class (osc)
+ - midi stuff to its own class? maybe
+
+*/
 
 //--------------------------------------------------------------
 void ofApp::setup(){
@@ -8,8 +44,8 @@ void ofApp::setup(){
 	midiOut.listOutPorts();
 
     // connect
-	midiOut.openPort(1); // by number
-	//midiOut.openPort("IAC Driver Pure Data In"); // by name
+	midiOut.openPort(0); // by number
+	//mmidiOut.openPort("IAC Driver Pure Data In"); // by name
 	//midiOut.openVirtualPort("ofxMidiOut"); // open a virtual port
 
     channel = 1;
@@ -20,6 +56,34 @@ void ofApp::setup(){
 	bend = 0;
 	touch = 0;
 	polytouch = 0;
+
+    orientation = vec3(0.,0.,0.);
+    accel = vec3(0., 0., 0.);
+    gyro = vec3(0., 0., 0.);
+    magnet = vec3(0., 0., 0.);
+    gestureMode = false;
+    pageToggle = false;
+    gesture = 0;
+    page = 0;
+
+    if(usingGlover) {
+        rx.setup(GLOVER);
+    } else {
+        rx.setup(GLOVE);
+    }
+
+    ofSetFrameRate(30);
+
+    //3D graphics setup
+    ofEnableNormalizedTexCoords();
+    material.setDiffuseColor(ofColor(255, 0, 0));
+    
+    light.setPointLight();
+    light.setDiffuseColor(ofColor(255));
+    light.setPosition(500, 0, 300);
+    
+    box.setPosition(-50,50,0);
+    box.set(200, 100, 100);
 }
 
 //--------------------------------------------------------------
@@ -30,33 +94,345 @@ void ofApp::update(){
 		ofxOscMessage m;
 		rx.getNextMessage(m);
 
-		// check for mouse moved message
-		if(m.getAddress() == "/mouse/position"){
-			// both the arguments are ints
-			// mouseX = m.getArgAsInt(0);
-			// mouseY = m.getArgAsInt(1);
-		}
-		// check for mouse button message
-		else if(m.getAddress() == "/mouse/button"){
-			// the single argument is a string
-			// mouseButtonState = m.getArgAsString(1);
-		} else if (m.getAddress() == "/1/accel") {
-            
-            float x = m.getArgAsFloat(0);
-            cout << x << endl;
-            
+        if(usingGlover) {
+            // switch for incoming Glover messages
+            if(m.getAddress() == "/roll"){
+                // cout<<m.getArgAsFloat(0)<<endl;
+                orientation.x = m.getArgAsFloat(0);
+            }
+            // check for mouse button message
+            // x is roll
+            // y is pitch
+            // z is yaw
+            else if(m.getAddress() == "/pitch"){
+                orientation.z = m.getArgAsFloat(0);
+            } else if (m.getAddress() == "/yaw") {
+                orientation.y = m.getArgAsFloat(0);    
+            }
+             else if (m.getAddress() == "/button") {
+                gestureMode = m.getArgAsBool(0);  
+                // cout<<gestureMode<<endl; 
+            } else if (m.getAddress() == "/gesture") {
+                gesture = m.getArgAsInt(0);
+            }
+            else {
+                // unrecognized message: display on the bottom of the screen
+                // messageBuffer.push_front(m.getAddress() + ": UNRECOGNIZED MESSAGE");
+            }
+        //using the glove without glover
+        } else {
+            if(m.getAddress() == "/glove/button") {
+                 buttonState = m.getArgAsFloat(0);
+                 //toggle gesturemode
+                if(!buttonState) {
+                    gestureMode = !gestureMode;
+                    pageToggle = false;
+
+                } else {
+                    //this means the button is held down
+                     pageToggle = true;
+                }
+            } 
+            else if (m.getAddress() == "/quaternion") {
+                quaternion.y = m.getArgAsFloat(0);
+                quaternion.z = m.getArgAsFloat(1);
+                quaternion.x = m.getArgAsFloat(2);
+                quaternion.w = m.getArgAsFloat(3);
+            }
+            else if (m.getAddress() == "/glove/bend") {
+                for(int i = 0; i<8; i++) {
+                    bends[i] = m.getArgAsFloat(i);
+                }
+            }
+            else if (m.getAddress() == "/sensors") {
+                gyro.x = m.getArgAsFloat(0);
+                gyro.y = m.getArgAsFloat(1);
+                gyro.z = m.getArgAsFloat(2);
+
+                accel.x = m.getArgAsFloat(3);
+                accel.y = m.getArgAsFloat(4);
+                accel.z = m.getArgAsFloat(5);
+
+                magnet.x = m.getArgAsFloat(6);
+                magnet.y = m.getArgAsFloat(7);
+                magnet.z = m.getArgAsFloat(8);
+
+                baro = m.getArgAsFloat(9);
+                
+            }
+             else {
+                // cout<<m.getArgAsFloat(0)<<endl;
+            }
         }
-        else {
-            // unrecognized message: display on the bottom of the screen
-            // messageBuffer.push_front(m.getAddress() + ": UNRECOGNIZED MESSAGE");
+		
+    }
+
+    if(usingGlover) {
+        roll = orientation.x;
+        pitch = orientation.y;
+    } else {
+        roll = eulerAngles(quaternion).x * 360 / (2*M_PI);
+        pitch = eulerAngles(quaternion).y * 360 / (2*M_PI);
+    }
+
+
+
+    if(pageToggle) {
+        //based on the pitch, choose a page
+        //pitch is in degrees, 0 to 180
+        if(pitch < 60) {
+            page = 0;
+        } else if (pitch >=60 || pitch <= 120) {
+            page = 1;
+        } else if (pitch>120) {
+            page = 2;
         }
     }
+
+    if(gestureMode) {
+            int cc = 0;
+            int velocity = 0;
+            int gestureSwitch;
+
+            if(usingGlover) {
+            gestureSwitch = gesture;
+                
+            } else {
+                gestureSwitch = result-1;
+            }
+
+            velocity = ofMap(roll, -180, 180, 127, 0);
+                        //slide roll to be at the bottom
+            if(roll>=64) {
+                roll -= 64;
+            } else {
+                roll += 64;
+            }
+
+            switch (gestureSwitch) {
+                //finger point
+                case 0:
+                    //choose based on page
+                    if(page == 0) {
+                        // pitch
+                        cc = 16;
+                    } else if (page == 1) {
+                        // portamento
+                        cc = 22;
+                    } else {
+                        // expression pedal
+                        cc = 4;
+                    }
+                    break;
+                //fist
+                case 1:
+                    //control tempo
+                    //choose based on page
+                    if(page == 0) {
+                        // filter
+                        cc = 16;
+                    } else if (page == 1) {
+                        // filter type
+                        cc = 23;
+                    } else {
+                        // env type
+                        cc = 9;
+                    }
+                    break;
+                // open hand
+                case 2:
+                    if(page == 0) {
+                        // mix
+                        cc = 18;
+                    } else if (page == 1) {
+                        // delay level
+                        cc = 24;
+                    } else {
+                        // tempo
+                        cc = 15;
+                    }
+                    break;
+                // OK hand
+                case 3:
+                    if(page == 0) {
+                        // sustain
+                        cc = 19;
+                    } else if (page == 1) {
+                        // ring mod
+                        cc = 25;
+                    } else {
+                        // synth mode
+                        cc = 29;
+                    }
+                    break;
+                // climber
+                case 4:
+                    if (page == 0) {
+                        // filter env
+                        cc = 20;
+                    } else if (page == 1) {
+                        // filter bandwidth
+                        cc = 26;
+                    } else {
+                        // channel
+                        cc = 127;
+                    }
+                    break;
+                // pupper hand
+                case 5:
+                    if (page == 0) {
+                        //modulation
+                        cc = 21;
+                    } else if (page == 1) {
+                        // delay feedback
+                        cc = 27;
+                    } else {
+                        // bypass
+                        cc = 14;
+                    }
+                    break;
+                default:
+                    break;
+
+            }
+            // cout<<cc<<endl;
+            // cout<<"velocity"<<velocity<<endl;
+            if(cc == 127) {
+                // code that switches the midi channel    
+            } else {
+                midiOut.sendControlChange(channel, cc, velocity);
+            }
+    } 
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
   ofSetColor(255);
-  ofDrawCircle(ofGetWidth()/2, ofGetHeight()/2, 100);
+
+  if(gestureMode) {
+    ofDrawBitmapString("Gesture Mode Enabled", ofGetWidth()/2, 50);
+  } else {
+    ofDrawBitmapString("Gesture Mode Disabled", ofGetWidth()/2, 50);
+  }
+
+  //-------RAPID-MIX---------------//
+    std::vector<double> trainingInput;
+    std::vector<double> trainingOutput;
+    
+    switch (recordingState) 
+    {
+        case 1:
+            ofSetColor(255, 0, 0);
+            break;
+        case 2:
+            ofSetColor(0, 255, 0);
+            break;
+        case 3:
+            ofSetColor(0, 0, 255);
+            break;
+        case 4:
+            ofSetColor(255, 0, 0);
+            break;
+        case 5:
+            ofSetColor(0, 255, 0);
+            break;
+        case 6:
+            ofSetColor(0, 0, 255);
+            break;
+        default:
+            ofSetColor(255, 255, 255);
+    }
+
+
+
+    // we know the length is 8 because array 
+    for (int j = 0; j < 8; j++)
+    {
+        trainingInput.push_back(bends[j]);
+    }
+
+
+    if(usingGlover) {
+        ofDrawBitmapString("Using Glover", ofGetWidth()/2, 10);
+        ofDrawBitmapString(gestureLookup(gesture), ofGetWidth()/2, 30);
+    } else {
+        ofDrawBitmapString("No Glovers Allowed", ofGetWidth()/2, 10);
+        if(runToggle) {
+            result = myKnn.run(trainingInput)[0];
+
+            ofDrawBitmapString(gestureLookup(result-1), ofGetWidth()/2, 30);
+        }
+    }
+    
+    if (recordingState) 
+    {
+        trainingOutput = { double(recordingState) };
+        rapidLib::trainingExample tempExample;
+        tempExample.input = trainingInput;
+        tempExample.output = trainingOutput;
+        myData.push_back(tempExample);
+    }
+    // begin 3D graphics
+    ofEnableDepthTest();
+    cam.begin();
+
+    ofDrawAxis(100); // if you prefer a less busy visual helper
+
+      //do all our 3D drawing here
+    
+    ofEnableLighting();
+    
+    light.enable();
+    
+    material.begin();
+
+    glPushMatrix();
+    if(usingGlover) {
+        box.setOrientation(orientation);
+    } else {
+        box.setOrientation(quaternion);
+        box.setScale(magnet/100);
+    }
+    box.draw();
+    glPopMatrix();
+
+    //disable everything
+    material.end();
+    light.disable();
+    ofDisableLighting();
+    cam.end();
+    ofDisableDepthTest();
+
+}
+
+string ofApp::gestureLookup(int gesture) {
+
+    string result;
+    switch(gesture) {
+        case 0:
+            result = "Finger Point";
+            break;
+        case 1:
+            result = "Fist";
+            break;
+        case 2:
+            result = "Open Hand";
+            break;
+        case 3:
+            result = "OK";
+            break;
+        case 4:
+            result = "Climber";
+            break;
+        case 5:
+            result = "Puppet Hand";
+            break;
+        default:
+            result = "unrecognized gesture";
+            break;
+    }
+
+    return result;
 }
 
 //--------------------------------------------------------------
@@ -77,6 +453,40 @@ void ofApp::keyPressed(int key){
 		ofLogNotice() << "note: " << note
 		              << " freq: " << ofxMidi::mtof(note) << " Hz";
 	}
+
+    switch(key) {
+        //1 key
+        case 49:
+            recordingState = 1;
+            break;
+        // 2 key
+        case 50:
+            recordingState = 2;
+            break;
+        // 3 key
+        case 51:
+            recordingState = 3;
+            break;
+        // 4 key
+        case 52:
+            recordingState = 4;
+            break;
+        // 5 key
+        case 53:
+            recordingState = 5;
+            break;
+        // 6 key
+        case 54:
+            recordingState = 6;
+            break;
+        // spacebar
+        case 32:
+            runToggle = (runToggle) ? false : true;
+            if (!runToggle) {
+                result = 0;
+            }
+    }
+    // std::cout << "runToggle " << runToggle << std::endl;
 }
 
 //--------------------------------------------------------------
@@ -86,11 +496,12 @@ void ofApp::keyReleased(int key){
 	
 		// send pgm change on arrow keys
 		case OF_KEY_UP:
-			currentPgm = (int) ofClamp(currentPgm+1, 0, 127);
+			currentPgm = (int) ofClamp(currentPgm+1, 0, 16);
 			midiOut.sendProgramChange(channel, currentPgm);
+            cout<<"program change"<< currentPgm<< endl;
 			break;
 		case OF_KEY_DOWN:
-			currentPgm = (int) ofClamp(currentPgm-1, 0, 127);
+			currentPgm = (int) ofClamp(currentPgm-1, 0, 16);
 			midiOut << ProgramChange(channel, currentPgm); // stream interface
 			break;
 
@@ -195,6 +606,10 @@ void ofApp::keyReleased(int key){
 			}
 			break;
 	}
+
+
+    recordingState = 0;
+    if (myData.size() > 0) myKnn.train(myData);
 }
 
 //--------------------------------------------------------------

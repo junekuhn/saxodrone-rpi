@@ -814,7 +814,24 @@ obj/osx/Release/src/main.o: \
   /Users/mx/code/oF/addons/ofxOsc/src/ofxOscReceiver.h \
   /Users/mx/code/oF/addons/ofxOsc/libs/oscpack/src/osc/OscPacketListener.h \
   /Users/mx/code/oF/addons/ofxOsc/libs/oscpack/src/osc/OscReceivedElements.h \
-  /Users/mx/code/oF/addons/ofxOsc/libs/oscpack/src/osc/../ip/PacketListener.h
+  /Users/mx/code/oF/addons/ofxOsc/libs/oscpack/src/osc/../ip/PacketListener.h \
+  /Users/mx/code/oF/addons/ofxRapidLib/src/ofxRapidLib.h \
+  /Users/mx/code/oF/addons/ofxRapidLib/src/../libs/rapidLib.h \
+  /Users/mx/code/oF/addons/ofxRapidLib/libs/regression.h \
+  /Users/mx/code/oF/addons/ofxRapidLib/libs/modelSet.h \
+  /Users/mx/code/oF/addons/ofxRapidLib/libs/trainingExample.h \
+  /Users/mx/code/oF/addons/ofxRapidLib/libs/baseModel.h \
+  /Users/mx/code/oF/addons/ofxRapidLib/libs/dependencies/../dependencies/json/json.h \
+  /Users/mx/code/oF/addons/ofxRapidLib/libs/neuralNetwork.h \
+  /Users/mx/code/oF/addons/ofxRapidLib/libs/knnClassification.h \
+  /Users/mx/code/oF/addons/ofxRapidLib/libs/svmClassification.h \
+  /Users/mx/code/oF/addons/ofxRapidLib/libs/dependencies/../dependencies/libsvm/libsvm.h \
+  /Users/mx/code/oF/addons/ofxRapidLib/libs/classification.h \
+  /Users/mx/code/oF/addons/ofxRapidLib/libs/seriesClassification.h \
+  /Users/mx/code/oF/addons/ofxRapidLib/libs/fastDTW.h \
+  /Users/mx/code/oF/addons/ofxRapidLib/libs/warpPath.h \
+  /Users/mx/code/oF/addons/ofxRapidLib/libs/rapidStream.h \
+  /Users/mx/code/oF/addons/ofxRapidLib/libs/../libs/dependencies/bayesfilter/BayesianFilter.h
 
 /Users/mx/code/oF/libs/openFrameworks/ofMain.h:
 
@@ -2445,3 +2462,37 @@ obj/osx/Release/src/main.o: \
 /Users/mx/code/oF/addons/ofxOsc/libs/oscpack/src/osc/OscReceivedElements.h:
 
 /Users/mx/code/oF/addons/ofxOsc/libs/oscpack/src/osc/../ip/PacketListener.h:
+
+/Users/mx/code/oF/addons/ofxRapidLib/src/ofxRapidLib.h:
+
+/Users/mx/code/oF/addons/ofxRapidLib/src/../libs/rapidLib.h:
+
+/Users/mx/code/oF/addons/ofxRapidLib/libs/regression.h:
+
+/Users/mx/code/oF/addons/ofxRapidLib/libs/modelSet.h:
+
+/Users/mx/code/oF/addons/ofxRapidLib/libs/trainingExample.h:
+
+/Users/mx/code/oF/addons/ofxRapidLib/libs/baseModel.h:
+
+/Users/mx/code/oF/addons/ofxRapidLib/libs/dependencies/../dependencies/json/json.h:
+
+/Users/mx/code/oF/addons/ofxRapidLib/libs/neuralNetwork.h:
+
+/Users/mx/code/oF/addons/ofxRapidLib/libs/knnClassification.h:
+
+/Users/mx/code/oF/addons/ofxRapidLib/libs/svmClassification.h:
+
+/Users/mx/code/oF/addons/ofxRapidLib/libs/dependencies/../dependencies/libsvm/libsvm.h:
+
+/Users/mx/code/oF/addons/ofxRapidLib/libs/classification.h:
+
+/Users/mx/code/oF/addons/ofxRapidLib/libs/seriesClassification.h:
+
+/Users/mx/code/oF/addons/ofxRapidLib/libs/fastDTW.h:
+
+/Users/mx/code/oF/addons/ofxRapidLib/libs/warpPath.h:
+
+/Users/mx/code/oF/addons/ofxRapidLib/libs/rapidStream.h:
+
+/Users/mx/code/oF/addons/ofxRapidLib/libs/../libs/dependencies/bayesfilter/BayesianFilter.h:
