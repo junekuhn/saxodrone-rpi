@@ -54,7 +54,11 @@ void ofApp::setup(){
 	midiOut.listOutPorts();
 
     // connect
-	midiOut.openPort(0); // by number
+	if(isRPI) {
+		midiOut.openPort(1);
+	} else {
+		midiOut.openPort(0); // by number
+	}
 	//mmidiOut.openPort("IAC Driver Pure Data In"); // by name
 	//midiOut.openVirtualPort("ofxMidiOut"); // open a virtual port
 
@@ -145,10 +149,10 @@ void ofApp::update(){
                 }
             } 
             else if (m.getAddress() == "/quaternion") {
-                quaternion.y = m.getArgAsFloat(0);
-                quaternion.z = m.getArgAsFloat(1);
-                quaternion.x = m.getArgAsFloat(2);
-                quaternion.w = m.getArgAsFloat(3);
+                quaternion.w = m.getArgAsFloat(0);
+                quaternion.x = m.getArgAsFloat(1);
+                quaternion.y = m.getArgAsFloat(2);
+                quaternion.z = m.getArgAsFloat(3);
             }
             else if (m.getAddress() == "/glove/bend") {
                 for(int i = 0; i<8; i++) {

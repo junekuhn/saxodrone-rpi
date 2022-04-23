@@ -2,7 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxMidi.h"
-#include "ofxOSC.h"
+#include "ofxOsc.h"
 #include "ofxRapidLib.h"
 
 # define GLOVER 9000
@@ -57,7 +57,7 @@ class ofApp : public ofBaseApp{
 		int expr, tempo, mix;
 		int page;
 
-		bool isRPI = false;
+		bool isRPI = true;
 		bool usingGlover = false;
 
 		//3D graphics
