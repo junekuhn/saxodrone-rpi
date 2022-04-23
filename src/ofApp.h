@@ -53,6 +53,7 @@ class ofApp : public ofBaseApp{
 		int pan, bend, touch, polytouch;
 		float roll = 0;
 		float pitch = 0;
+		float yaw = 0;
 		int expr, tempo, mix;
 		int page;
 

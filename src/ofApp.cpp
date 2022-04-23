@@ -28,12 +28,22 @@ page 2 - alt params
 page 3 - exp, env type, tempo, synth mode, channel?, program?
 
 change channel, what is the cc going to be ???
+haptic feedback
 
 
 refactoring!!
 
  - glove stuff to its own class (osc)
  - midi stuff to its own class? maybe
+
+ testing notes
+  - a lot of parameters do not want to have glove interaction
+  - reaching the button might require two hands depending on pose
+  - pitch seems the most reliable 
+  - puppet hand and open hand are often confused
+  - i need to show on the gui what parameter I'm modifying
+  
+
 
 */
 
@@ -127,6 +137,7 @@ void ofApp::update(){
                 if(!buttonState) {
                     gestureMode = !gestureMode;
                     pageToggle = false;
+                    cout<< "changing to page " << page << endl;
 
                 } else {
                     //this means the button is held down
@@ -171,21 +182,32 @@ void ofApp::update(){
         roll = orientation.x;
         pitch = orientation.y;
     } else {
-        roll = eulerAngles(quaternion).x * 360 / (2*M_PI);
-        pitch = eulerAngles(quaternion).y * 360 / (2*M_PI);
-    }
+        // pitch = eulerAngles(quaternion).z;
+        // //this shouldn't be yaw, but it is :(
+        // yaw = eulerAngles(quaternion).x;
+        // //this shouldn't be pitch, but it is :(
+        // roll = eulerAngles(quaternion).y;
 
+        // from 
+        // yaw = accel.x;
+        //from -1 to 1
+        pitch = accel.x;
+        //from -1 to 1
+        roll = accel.z;
+    }
+ 
 
 
     if(pageToggle) {
+        // cout<<"pitch is " << pitch<<endl;
         //based on the pitch, choose a page
         //pitch is in degrees, 0 to 180
-        if(pitch < 60) {
-            page = 0;
-        } else if (pitch >=60 || pitch <= 120) {
-            page = 1;
-        } else if (pitch>120) {
+        if(pitch < -0.5) {
             page = 2;
+        } else if (pitch >= -0.5 && pitch <= 0.5) {
+            page = 1;
+        } else if (pitch>0.5) {
+            page = 0;
         }
     }
 
@@ -201,13 +223,10 @@ void ofApp::update(){
                 gestureSwitch = result-1;
             }
 
-            velocity = ofMap(roll, -180, 180, 127, 0);
+            velocity = ofMap(pitch, -1, 1, 127, 0);
+
+            cout<<"velocity is " << velocity<<endl;
                         //slide roll to be at the bottom
-            if(roll>=64) {
-                roll -= 64;
-            } else {
-                roll += 64;
-            }
 
             switch (gestureSwitch) {
                 //finger point
@@ -230,7 +249,7 @@ void ofApp::update(){
                     //choose based on page
                     if(page == 0) {
                         // filter
-                        cc = 16;
+                        cc = 17;
                     } else if (page == 1) {
                         // filter type
                         cc = 23;
@@ -295,7 +314,7 @@ void ofApp::update(){
                     break;
 
             }
-            // cout<<cc<<endl;
+            cout<<cc<<endl;
             // cout<<"velocity"<<velocity<<endl;
             if(cc == 127) {
                 // code that switches the midi channel    

@@ -7,13 +7,15 @@
 # define GLOVER 9000
 # define GLOVE 8216
 
+using namespace glm;
+
 class MiMu {
     public:
 
         void setup();
 		void update();
 		void draw();
-        
+
         ofxOscReceiver rx;
 		string gestureLookup(int gesture);
 
@@ -40,4 +42,4 @@ class MiMu {
 
     private:
 
-}
+};
