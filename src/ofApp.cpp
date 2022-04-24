@@ -10,14 +10,16 @@ figure out how to save and load the gesture data
  - each example is a vector of doubles
  - this may be difficult
 set it up on rpi
-- get a keyboard and mouse
-- make sure everything works that I was able to do on mac
-- headless mode (load a saved model, or use the keyboard to train the gestures)
+- display and keyboard and mouse
+- 
 playtest with saxophone
 set up channel switching - optional
 set up mercury 7 controls
 
-
+- graphics
+    - texture the cube
+    - add a shader or some background
+    - 
 
 // mapping ideas
 holding the button down - which page
@@ -42,7 +44,10 @@ refactoring!!
   - pitch seems the most reliable 
   - puppet hand and open hand are often confused
   - i need to show on the gui what parameter I'm modifying
-  
+  - to change it to raspberry pi /wifi/send/ip "192.168.0.179"
+  - to change it to mac (use glover or) /wifi/send/ip "192.168.0.243"
+  - the glove ip is 192.168.1.99
+
 
 
 */
