@@ -1,3 +1,3 @@
-ofxOSC
+ofxOsc
 ofxMidi
 ofxRapidLib

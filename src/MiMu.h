@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxOSC.h"
+#include "ofxOsc.h"
 #include "ofxRapidLib.h"
 
 # define GLOVER 9000
