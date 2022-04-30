@@ -9,12 +9,14 @@
 
 using namespace glm;
 
-class MiMu {
+class MiMU {
     public:
 
         void setup();
 		void update();
 		void draw();
+
+		bool usingGlover = false;
 
         ofxOscReceiver rx;
 		string gestureLookup(int gesture);
@@ -31,6 +33,10 @@ class MiMu {
 		int gesture;
 		quat quaternion;
 		double bends[8];
+
+		float roll = 0;
+		float pitch = 0;
+		float yaw = 0;
 
     		//rapidmix
 		std::vector<rapidLib::trainingExample> myData;

@@ -800,7 +800,7 @@ obj/osx/Release/src/main.o: \
   /Users/mx/code/oF/addons/ofxMidi/src/desktop/ofxRtMidiOut.h \
   /Users/mx/code/oF/addons/ofxMidi/src/ofxMidiClock.h \
   /Users/mx/code/oF/addons/ofxMidi/src/ofxMidiTimecode.h \
-  /Users/mx/code/oF/addons/ofxOsc/src/ofxOSC.h \
+  /Users/mx/code/oF/addons/ofxOsc/src/ofxOsc.h \
   /Users/mx/code/oF/addons/ofxOsc/src/ofxOscArg.h \
   /Users/mx/code/oF/addons/ofxOsc/src/ofxOscMessage.h \
   /Users/mx/code/oF/addons/ofxOsc/src/ofxOscSender.h \
@@ -831,7 +831,8 @@ obj/osx/Release/src/main.o: \
   /Users/mx/code/oF/addons/ofxRapidLib/libs/fastDTW.h \
   /Users/mx/code/oF/addons/ofxRapidLib/libs/warpPath.h \
   /Users/mx/code/oF/addons/ofxRapidLib/libs/rapidStream.h \
-  /Users/mx/code/oF/addons/ofxRapidLib/libs/../libs/dependencies/bayesfilter/BayesianFilter.h
+  /Users/mx/code/oF/addons/ofxRapidLib/libs/../libs/dependencies/bayesfilter/BayesianFilter.h \
+  /Users/mx/code/oF/apps/myApps/saxodrone-rpi/src/MiMU.h
 
 /Users/mx/code/oF/libs/openFrameworks/ofMain.h:
 
@@ -2433,7 +2434,7 @@ obj/osx/Release/src/main.o: \
 
 /Users/mx/code/oF/addons/ofxMidi/src/ofxMidiTimecode.h:
 
-/Users/mx/code/oF/addons/ofxOsc/src/ofxOSC.h:
+/Users/mx/code/oF/addons/ofxOsc/src/ofxOsc.h:
 
 /Users/mx/code/oF/addons/ofxOsc/src/ofxOscArg.h:
 
@@ -2496,3 +2497,5 @@ obj/osx/Release/src/main.o: \
 /Users/mx/code/oF/addons/ofxRapidLib/libs/rapidStream.h:
 
 /Users/mx/code/oF/addons/ofxRapidLib/libs/../libs/dependencies/bayesfilter/BayesianFilter.h:
+
+/Users/mx/code/oF/apps/myApps/saxodrone-rpi/src/MiMU.h:

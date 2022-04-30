@@ -1,6 +1,6 @@
-obj/osx/Release/src/MiMu.o: \
-  /Users/mx/code/oF/apps/myApps/saxodrone-rpi/src/MiMu.cpp \
-  /Users/mx/code/oF/apps/myApps/saxodrone-rpi/src/MiMu.h \
+obj/osx/Release/src/MiMU.o: \
+  /Users/mx/code/oF/apps/myApps/saxodrone-rpi/src/MiMU.cpp \
+  /Users/mx/code/oF/apps/myApps/saxodrone-rpi/src/MiMU.h \
   /Users/mx/code/oF/libs/openFrameworks/ofMain.h \
   /Users/mx/code/oF/libs/openFrameworks/utils/ofConstants.h \
   /Users/mx/code/oF/libs/glew/include/GL/glew.h \
@@ -787,7 +787,7 @@ obj/osx/Release/src/MiMu.o: \
   /Users/mx/code/oF/libs/openFrameworks/3d/of3dUtils.h \
   /Users/mx/code/oF/libs/openFrameworks/3d/ofCamera.h \
   /Users/mx/code/oF/libs/openFrameworks/3d/ofEasyCam.h \
-  /Users/mx/code/oF/addons/ofxOsc/src/ofxOSC.h \
+  /Users/mx/code/oF/addons/ofxOsc/src/ofxOsc.h \
   /Users/mx/code/oF/addons/ofxOsc/src/ofxOscArg.h \
   /Users/mx/code/oF/addons/ofxOsc/src/ofxOscMessage.h \
   /Users/mx/code/oF/addons/ofxOsc/src/ofxOscSender.h \
@@ -820,7 +820,7 @@ obj/osx/Release/src/MiMu.o: \
   /Users/mx/code/oF/addons/ofxRapidLib/libs/rapidStream.h \
   /Users/mx/code/oF/addons/ofxRapidLib/libs/../libs/dependencies/bayesfilter/BayesianFilter.h
 
-/Users/mx/code/oF/apps/myApps/saxodrone-rpi/src/MiMu.h:
+/Users/mx/code/oF/apps/myApps/saxodrone-rpi/src/MiMU.h:
 
 /Users/mx/code/oF/libs/openFrameworks/ofMain.h:
 
@@ -2394,7 +2394,7 @@ obj/osx/Release/src/MiMu.o: \
 
 /Users/mx/code/oF/libs/openFrameworks/3d/ofEasyCam.h:
 
-/Users/mx/code/oF/addons/ofxOsc/src/ofxOSC.h:
+/Users/mx/code/oF/addons/ofxOsc/src/ofxOsc.h:
 
 /Users/mx/code/oF/addons/ofxOsc/src/ofxOscArg.h:
 

@@ -4,6 +4,7 @@
 #include "ofxMidi.h"
 #include "ofxOsc.h"
 #include "ofxRapidLib.h"
+#include "MiMU.h"
 
 # define GLOVER 9000
 # define GLOVE 8216
@@ -18,32 +19,8 @@ class ofApp : public ofBaseApp{
 		
 		void keyPressed(int key);
 		void keyReleased(int key);
-		void mouseMoved(int x, int y);
-		void mouseDragged(int x, int y, int button);
-		void mousePressed(int x, int y, int button);
-		void mouseReleased(int x, int y, int button);
-		void mouseEntered(int x, int y);
-		void mouseExited(int x, int y);
-		void windowResized(int w, int h);
-		void dragEvent(ofDragInfo dragInfo);
-		void gotMessage(ofMessage msg);
-
-		ofxOscReceiver rx;
-		string gestureLookup(int gesture);
-
-		//incoming features
-		vec3 orientation;
-		vec3 gyro;
-		vec3 accel;
-		vec3 magnet;
-		float baro;
-		bool buttonState;
-
-		bool gestureMode;
-		int gesture;
-		quat quaternion;
-		double bends[8];
-
+		
+		MiMU rightGlove;
 
 		//output features
 		ofxMidiOut midiOut;
@@ -58,7 +35,7 @@ class ofApp : public ofBaseApp{
 		int page;
 
 		bool isRPI = true;
-		bool usingGlover = false;
+
 
 		//3D graphics
 		ofEasyCam cam;
