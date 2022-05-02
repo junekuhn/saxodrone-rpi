@@ -1,50 +1,24 @@
+# Saxodrone + MiMU Glove
+
+This OpenFrameworks app allows me to use the MiMU glove to modulate my Meris guitar pedals.  This is a cross-platform application, but designed for the Raspberry Pi.
+
+Use the number keys 1-6 to train gestures. Hit the spacebar to run the neural net.
+
+### setup
+
+Download the following add-ons: ofxRapidLib, ofxMidi, and ofxOsc
+clone this repository in myApps folder
+
 ### build
 
-make
+navigate to the top level folder
+`make` 
 
 #### run 
 
-make RunRelease
+`make RunRelease`
 
-### testing notes
 
- testing notes
-  - a lot of parameters do not want to have glove interaction
-  - reaching the button might require two hands depending on pose
-  - pitch seems the most reliable 
-  - puppet hand and open hand are often confused
-  - i need to show on the gui what parameter I'm modifying
-  - to change it to raspberry pi /wifi/send/ip "192.168.0.179"
-  - to change it to mac (use glover or) /wifi/send/ip "192.168.0.243"
-  - the glove ip is 192.168.1.99
+RapidLib example code
+https://github.com/mzed/ofxRapidLib/blob/main/example-objectClassification/src/ofApp.cpp
 
-  Testing notes part 2
-
-  What parameters were fun to change?
-   - exp
-   - delay
-   - pitch
-   - synth voice
-   - presets
-
-   What parameters were not ?
-   - portamento
-   - filter type
-   - env type
-   - bypass
-
-   What didn't seem to go as planned
-   - filter bandwidth
-   - filter
-   - mix
-   - ring mod
-
-Preparing for the next round
- - test the new quaternion config
- - make a nice guide showing the mappings
- - test the parameters that didn't go as planned
- - change the mappings so I only change the fun things (maybe make a new mapping preset)
- - make a Mimu cpp class
- - make the mercury 7 presets 
- - add the Parameter I'm changing and what page I'm on to the gui
- - 

@@ -3,6 +3,7 @@
 
 using namespace glm;
 
+
 //--------------------------------------------------------------
 void ofApp::setup(){
 
@@ -10,11 +11,7 @@ void ofApp::setup(){
 	midiOut.listOutPorts();
 
     // connect
-	if(isRPI) {
-		midiOut.openPort(1);
-	} else {
-		midiOut.openPort(0); // by number
-	}
+	midiOut.openPort(1);
 	//mmidiOut.openPort("IAC Driver Pure Data In"); // by name
 	//midiOut.openVirtualPort("ofxMidiOut"); // open a virtual port
 
@@ -27,9 +24,11 @@ void ofApp::setup(){
 	touch = 0;
 	polytouch = 0;
     page = 0;
+    result = 0;
 
 
     rightGlove.setup();
+    debugMode = true;
 
     ofSetFrameRate(30);
 
@@ -70,14 +69,17 @@ void ofApp::update(){
 
             if(rightGlove.usingGlover) {
             gestureSwitch = rightGlove.gesture;
-                
             } else {
                 gestureSwitch = result-1;
             }
 
-            velocity = ofMap(rightGlove.pitch, -1, 1, 127, 0);
+            if(!rightGlove.usingGlover){
+            velocity  = ofMap(rightGlove.pitch, -1, 1, 127, 0);
+            } else {
+                velocity = rightGlove.pitch;
+            }
 
-            cout<<"velocity is " << velocity<<endl;
+            cout<<"velocity is " << pitch<<endl;
                         //slide roll to be at the bottom
 
             switch (gestureSwitch) {
@@ -180,12 +182,6 @@ void ofApp::update(){
 void ofApp::draw(){
   ofSetColor(255);
 
-  if(rightGlove.gestureMode) {
-    ofDrawBitmapString("Gesture Mode Enabled", ofGetWidth()/2, 50);
-  } else {
-    ofDrawBitmapString("Gesture Mode Disabled", ofGetWidth()/2, 50);
-  }
-
   //-------RAPID-MIX---------------//
     std::vector<double> trainingInput;
     std::vector<double> trainingOutput;
@@ -222,18 +218,14 @@ void ofApp::draw(){
         trainingInput.push_back(rightGlove.bends[j]);
     }
 
-
-    if(rightGlove.usingGlover) {
-        ofDrawBitmapString("Using Glover", ofGetWidth()/2, 10);
-        ofDrawBitmapString(rightGlove.gestureLookup(rightGlove.gesture), ofGetWidth()/2, 30);
-    } else {
-        ofDrawBitmapString("No Glovers Allowed", ofGetWidth()/2, 10);
-        if(runToggle) {
-            result = myKnn.run(trainingInput)[0];
-
-            ofDrawBitmapString(rightGlove.gestureLookup(result-1), ofGetWidth()/2, 30);
-        }
+    if(runToggle) {
+        result = myKnn.run(trainingInput)[0];
     }
+
+    if(debugMode) {
+        rightGlove.draw(result);
+    }
+
     
     if (recordingState) 
     {
@@ -262,7 +254,6 @@ void ofApp::draw(){
         box.setOrientation(rightGlove.orientation);
     } else {
         box.setOrientation(rightGlove.quaternion);
-        box.setScale(rightGlove.magnet/100);
     }
     box.draw();
     glPopMatrix();

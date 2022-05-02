@@ -25,3 +25,12 @@ page 3 - exp, env type, tempo, synth mode, channel?, program?
 change channel, what is the cc going to be ???
 haptic feedback
 using sysex to send and receive presets
+
+What are the nice-to-haves
+
+control of multiple pedals at once
+looping control
+volume control
+being able to set and create presets 
+going freestyle without presets
+visualization of the audio 

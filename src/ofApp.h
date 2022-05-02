@@ -21,6 +21,7 @@ class ofApp : public ofBaseApp{
 		void keyReleased(int key);
 		
 		MiMU rightGlove;
+		bool debugMode;
 
 		//output features
 		ofxMidiOut midiOut;

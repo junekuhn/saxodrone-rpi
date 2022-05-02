@@ -14,12 +14,13 @@ class MiMU {
 
         void setup();
 		void update();
-		void draw();
+		void draw(int result);
 
-		bool usingGlover = false;
+		bool usingGlover = true;
 
         ofxOscReceiver rx;
 		string gestureLookup(int gesture);
+		string directionLookup(int direction);
 
 		//incoming features
 		vec3 orientation;
@@ -31,6 +32,7 @@ class MiMU {
 
 		bool gestureMode;
 		int gesture;
+		int direction;
 		quat quaternion;
 		double bends[8];
 

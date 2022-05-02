@@ -7,7 +7,8 @@ void MiMU::setup() {
     magnet = vec3(0., 0., 0.);
     gestureMode = false;
     pageToggle = false;
-    gesture = 0;
+    gesture = -1;
+    direction = -1;
 
 
     if(usingGlover) {
@@ -45,6 +46,8 @@ void MiMU::update() {
                 // cout<<gestureMode<<endl; 
             } else if (m.getAddress() == "/gesture") {
                 gesture = m.getArgAsInt(0);
+            } else if (m.getAddress() =="/direction") {
+                direction = m.getArgAsInt(0);
             }
             else {
                 // unrecognized message: display on the bottom of the screen
@@ -119,8 +122,27 @@ void MiMU::update() {
 
 }
 
-void MiMU::draw() {
-    
+void MiMU::draw(int result) {
+
+    int x = 60;
+
+    ofDrawBitmapString("Saxodrone + MiMU Glove", ofGetWidth()/2-100, 40);
+
+    if(gestureMode) {
+        ofDrawBitmapString("Gesture Mode Enabled", x, 50);
+    } else {
+        ofDrawBitmapString("Gesture Mode Disabled", x, 50);
+    }
+
+    if(usingGlover) {
+        ofDrawBitmapString("Using Glover", x, 90);
+        ofDrawBitmapString(gestureLookup(gesture), x, 30);
+        ofDrawBitmapString(directionLookup(direction) , x, 70);
+    } else {
+        ofDrawBitmapString("No Glovers Allowed", x, 90);
+        ofDrawBitmapString(gestureLookup(result-1), x, 30);
+        ofDrawBitmapString(directionLookup(direction), x, 70);
+    }
 }
 
 string MiMU::gestureLookup(int gesture) {
@@ -147,6 +169,36 @@ string MiMU::gestureLookup(int gesture) {
             break;
         default:
             result = "unrecognized gesture";
+            break;
+    }
+
+    return result;
+}
+
+string MiMU::directionLookup(int direction) {
+
+    string result;
+    switch(direction) {
+        case 0:
+            result = "Forwards";
+            break;
+        case 1:
+            result = "Backwards";
+            break;
+        case 2:
+            result = "Left";
+            break;
+        case 3:
+            result = "Right";
+            break;
+        case 4:
+            result = "Up";
+            break;
+        case 5:
+            result = "Down";
+            break;
+        default:
+            result = "No direction detected";
             break;
     }
 
