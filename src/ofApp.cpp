@@ -49,7 +49,17 @@ void ofApp::update(){
     
     rightGlove.update();
 
-    if(rightGlove.pageToggle) {
+    if(debugMode) {
+        devUpdate();
+    } else {
+        performUpdate();
+    }
+
+}
+
+//exposes all midi parameters for testing
+void ofApp::devUpdate() {
+        if(rightGlove.pageToggle) {
         // cout<<"pitch is " << pitch<<endl;
         //based on the pitch, choose a page
         //pitch is in degrees, 0 to 180
@@ -62,24 +72,28 @@ void ofApp::update(){
         }
     }
 
-    if(rightGlove.gestureMode) {
+       if(rightGlove.gestureMode) {
             int cc = 0;
             int velocity = 0;
             int gestureSwitch;
 
             if(rightGlove.usingGlover) {
-            gestureSwitch = rightGlove.gesture;
+                gestureSwitch = rightGlove.gesture;
             } else {
                 gestureSwitch = result-1;
             }
 
             if(!rightGlove.usingGlover){
-            velocity  = ofMap(rightGlove.pitch, -1, 1, 127, 0);
+                velocity  = ofMap(rightGlove.pitch, -1, 1, 127, 0);
+
             } else {
                 velocity = rightGlove.pitch;
             }
 
-            cout<<"velocity is " << pitch<<endl;
+            velocity = rightGlove.ease(prevVelocity, velocity);
+            prevVelocity = velocity;
+
+            cout<<"velocity is " << velocity<<endl;
                         //slide roll to be at the bottom
 
             switch (gestureSwitch) {
@@ -173,7 +187,130 @@ void ofApp::update(){
             if(cc == 127) {
                 // code that switches the midi channel    
             } else {
-                midiOut.sendControlChange(channel, cc, velocity);
+                    midiOut.sendControlChange(channel, cc, velocity);
+            }
+    } 
+}
+
+//minimal parameters for performance
+void ofApp::performUpdate() {
+
+    if(rightGlove.gestureMode) {
+            int cc = 0;
+            int velocity = 0;
+            int gestureSwitch;
+
+            if(rightGlove.usingGlover) {
+                gestureSwitch = rightGlove.gesture;
+            } else {
+                gestureSwitch = result-1;
+            }
+
+            if(!rightGlove.usingGlover){
+                velocity  = ofMap(rightGlove.pitch, -1, 1, 127, 0);
+
+            } else {
+                velocity = rightGlove.pitch;
+            }
+
+            velocity = rightGlove.ease(prevVelocity, velocity);
+            prevVelocity = velocity;
+
+            cout<<"velocity is " << velocity<<endl;
+                        //slide roll to be at the bottom
+
+            switch (gestureSwitch) {
+                //finger point
+                case 0:
+                    //choose based on page
+                    if(page == 0) {
+                        // pitch
+                        cc = 16;
+                    } else if (page == 1) {
+                        // portamento
+                        cc = 22;
+                    } else {
+                        // expression pedal
+                        cc = 4;
+                    }
+                    break;
+                //fist
+                case 1:
+                    //control tempo
+                    //choose based on page
+                    if(page == 0) {
+                        // filter
+                        cc = 17;
+                    } else if (page == 1) {
+                        // filter type
+                        cc = 23;
+                    } else {
+                        // env type
+                        cc = 9;
+                    }
+                    break;
+                // open hand
+                case 2:
+                    if(page == 0) {
+                        // mix
+                        cc = 18;
+                    } else if (page == 1) {
+                        // delay level
+                        cc = 24;
+                    } else {
+                        // tempo
+                        cc = 15;
+                    }
+                    break;
+                // OK hand
+                case 3:
+                    if(page == 0) {
+                        // sustain
+                        cc = 19;
+                    } else if (page == 1) {
+                        // ring mod
+                        cc = 25;
+                    } else {
+                        // synth mode
+                        cc = 29;
+                    }
+                    break;
+                // climber
+                case 4:
+                    if (page == 0) {
+                        // filter env
+                        cc = 20;
+                    } else if (page == 1) {
+                        // filter bandwidth
+                        cc = 26;
+                    } else {
+                        // channel
+                        cc = 127;
+                    }
+                    break;
+                // pupper hand
+                case 5:
+                    if (page == 0) {
+                        //modulation
+                        cc = 21;
+                    } else if (page == 1) {
+                        // delay feedback
+                        cc = 27;
+                    } else {
+                        // bypass
+                        cc = 14;
+                    }
+                    break;
+                default:
+                    break;
+
+            }
+            cout<<cc<<endl;
+            // cout<<"velocity"<<velocity<<endl;
+            if(cc == 127) {
+                // code that switches the midi channel    
+            } else {
+                    midiOut.sendControlChange(channel, cc, velocity);
             }
     } 
 }
@@ -251,9 +388,20 @@ void ofApp::draw(){
 
     glPushMatrix();
     if(rightGlove.usingGlover) {
-        box.setOrientation(rightGlove.orientation);
+        vec3 eased;
+        eased.x = rightGlove.ease(prevOrientation.x, rightGlove.orientation.x);
+        eased.y = rightGlove.ease(prevOrientation.y, rightGlove.orientation.y);
+        eased.z = rightGlove.ease(prevOrientation.z, rightGlove.orientation.z);
+        box.setOrientation(eased);
+        prevOrientation = eased;
     } else {
-        box.setOrientation(rightGlove.quaternion);
+        vec4 easedQ;
+        easedQ.x = rightGlove.ease(prevQuaternion.x, rightGlove.quaternion.x);
+        easedQ.y = rightGlove.ease(prevQuaternion.y, rightGlove.quaternion.y);
+        easedQ.z = rightGlove.ease(prevQuaternion.z, rightGlove.quaternion.z);
+        easedQ.w = rightGlove.ease(prevQuaternion.w, rightGlove.quaternion.w);
+        box.setOrientation(easedQ);
+        prevQuaternion = easedQ;
     }
     box.draw();
     glPopMatrix();
@@ -297,7 +445,6 @@ void ofApp::keyPressed(int key){
         case 54:
             recordingState = 6;
             break;
-        // spacebar
         case 32:
             runToggle = (runToggle) ? false : true;
             if (!runToggle) {
@@ -322,6 +469,10 @@ void ofApp::keyReleased(int key){
 			midiOut << ProgramChange(channel, currentPgm); // stream interface
 			break;
 		// print the port list
+                // g
+        case 103:
+            rightGlove.toggleGlover();
+            break;
 		case '?':
 			midiOut.listOutPorts();
 			break;

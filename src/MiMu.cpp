@@ -9,6 +9,8 @@ void MiMU::setup() {
     pageToggle = false;
     gesture = -1;
     direction = -1;
+    easingToggle = true;
+    easingAmount = 0.1;
 
 
     if(usingGlover) {
@@ -104,7 +106,7 @@ void MiMU::update() {
 
     if(usingGlover) {
         roll = orientation.x;
-        pitch = orientation.y;
+        pitch = orientation.z;
     } else {
         // pitch = eulerAngles(quaternion).z;
         // //this shouldn't be yaw, but it is :(
@@ -203,4 +205,20 @@ string MiMU::directionLookup(int direction) {
     }
 
     return result;
+}
+
+float MiMU::ease(float previous, float current) {
+    float diff = current - previous;
+    float output = previous + easingAmount * diff;
+    return output;
+}
+
+int MiMU::ease(int previous, int current) {
+    int diff = current - previous;
+    int output = previous + easingAmount * diff;
+    return output;
+}
+
+void MiMU::toggleGlover() {
+    usingGlover = !usingGlover;
 }

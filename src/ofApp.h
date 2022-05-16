@@ -16,12 +16,15 @@ class ofApp : public ofBaseApp{
 		void setup();
 		void update();
 		void draw();
+		void devUpdate();
+		void performUpdate();
 		
 		void keyPressed(int key);
 		void keyReleased(int key);
 		
 		MiMU rightGlove;
 		bool debugMode;
+
 
 		//output features
 		ofxMidiOut midiOut;
@@ -34,6 +37,10 @@ class ofApp : public ofBaseApp{
 		float yaw = 0;
 		int expr, tempo, mix;
 		int page;
+
+		int prevVelocity = 0;
+		vec3 prevOrientation = vec3(0,0,0);
+		vec4 prevQuaternion = vec4(0,0,0,0);
 
 		bool isRPI = true;
 

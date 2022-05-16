@@ -17,6 +17,7 @@ class MiMU {
 		void draw(int result);
 
 		bool usingGlover = true;
+		void toggleGlover();
 
         ofxOscReceiver rx;
 		string gestureLookup(int gesture);
@@ -47,6 +48,12 @@ class MiMU {
 		bool runToggle;
 		int result;
 		bool pageToggle;
+
+		bool easingToggle;
+		float easingAmount;
+		float ease(float previous, float current);
+		int ease(int previous, int current);
+
 
     private:
 
