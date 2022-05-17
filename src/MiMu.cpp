@@ -75,10 +75,10 @@ void MiMU::update() {
                 }
             } 
             else if (m.getAddress() == "/quaternion") {
-                quaternion.w = m.getArgAsFloat(0);
-                quaternion.x = m.getArgAsFloat(1);
-                quaternion.y = m.getArgAsFloat(2);
-                quaternion.z = m.getArgAsFloat(3);
+                quaternion.x = m.getArgAsFloat(0);
+                quaternion.y = m.getArgAsFloat(1);
+                quaternion.z = m.getArgAsFloat(2);
+                quaternion.w = m.getArgAsFloat(3);
             }
             else if (m.getAddress() == "/glove/bend") {
                 for(int i = 0; i<8; i++) {

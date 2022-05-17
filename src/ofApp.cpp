@@ -7,6 +7,8 @@ using namespace glm;
 //--------------------------------------------------------------
 void ofApp::setup(){
 
+    ofBackground(0);
+
 	// print the available output ports to the console
 	midiOut.listOutPorts();
 
@@ -32,7 +34,7 @@ void ofApp::setup(){
 
     ofSetFrameRate(30);
 
-    mySphereRadius = 40;
+    mySphereRadius = 400;
     int paramGridSizeX = 40;
     int paramGridSizeY = 50;
     ofPrimitiveMode curDisplayMode = OF_PRIMITIVE_TRIANGLES;
@@ -369,9 +371,6 @@ void ofApp::draw(){
     // begin 3D graphics
     ofEnableDepthTest();
     cam.begin();
-
-    ofDrawAxis(100); // if you prefer a less busy visual helper
-
       //do all our 3D drawing here
     
     ofEnableLighting();
@@ -380,7 +379,7 @@ void ofApp::draw(){
     
     // material.begin();
 
-    glPushMatrix();
+    ofPushMatrix();
     if(rightGlove.usingGlover) {
         vec3 eased;
         eased.x = rightGlove.ease(prevOrientation.x, rightGlove.orientation.x);
@@ -399,7 +398,10 @@ void ofApp::draw(){
         easedQ.w = rightGlove.ease(prevQuaternion.w, rightGlove.quaternion.w);
 
         //for now this works but its broken
-        ofRotateRad(easedQ.w*2, easedQ.x, easedQ.y, easedQ.z);
+        // ofRotateRad(easedQ.w*2, easedQ.x, easedQ.y, easedQ.z);
+        ofQuaternion of_quat{ easedQ };
+        ofMatrix4x4 rotation_matrix = ofMatrix4x4::newRotationMatrix( easedQ );
+	    ofMultMatrix(rotation_matrix);
         //rotate quaternion
         prevQuaternion = easedQ;
     }
@@ -421,22 +423,22 @@ void ofApp::draw(){
     avgY = sumY/numBalls;
     avgRadius = radii/numBalls;
     
-    metaballShader.begin();
+    // metaballShader.begin();
     
-    metaballShader.setUniform3fv("metaballs", data, numBalls);
-    metaballShader.setUniform1i("num_balls", numBalls);
-    metaballShader.setUniform1f("HEIGHT", ofGetHeight());
-    metaballShader.setUniform1f("WIDTH", ofGetWidth());
+    // metaballShader.setUniform3fv("metaballs", data, numBalls);
+    // metaballShader.setUniform1i("num_balls", numBalls);
+    // metaballShader.setUniform1f("HEIGHT", ofGetHeight());
+    // metaballShader.setUniform1f("WIDTH", ofGetWidth());
     
     // ofDrawRectangle(0,0,ofGetWidth(), ofGetHeight());
+    myMeshMaterial.begin();
     myParticleSystem.draw();
 
-    metaballShader.end();
+    // metaballShader.end();
 	// Draw the particles
-	// myMeshMaterial.begin();
+	myMeshMaterial.end();
 
-	// myMeshMaterial.end();
-    glPopMatrix();
+    ofPopMatrix();
 
     //disable everything
     // material.end();
