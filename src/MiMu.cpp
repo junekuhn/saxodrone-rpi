@@ -5,6 +5,8 @@ void MiMU::setup() {
     accel = vec3(0., 0., 0.);
     gyro = vec3(0., 0., 0.);
     magnet = vec3(0., 0., 0.);
+    forwardQuaternion = quat(0,0,0,0);
+    forwardOrientation = vec3(0,0,0);
     gestureMode = false;
     pageToggle = false;
     gesture = -1;
@@ -31,7 +33,7 @@ void MiMU::update() {
         if(usingGlover) {
             // switch for incoming Glover messages
             if(m.getAddress() == "/roll"){
-                // cout<<m.getArgAsFloat(0)<<endl;
+                // should be from 0 to 2pi
                 orientation.x = m.getArgAsFloat(0);
             }
             // check for mouse button message
@@ -39,8 +41,10 @@ void MiMU::update() {
             // y is pitch
             // z is yaw
             else if(m.getAddress() == "/pitch"){
+                //should be coming in from 0 to 3.14
                 orientation.z = m.getArgAsFloat(0);
             } else if (m.getAddress() == "/yaw") {
+                // should be coming in at 0 to 6.28
                 orientation.y = m.getArgAsFloat(0);    
             }
              else if (m.getAddress() == "/button") {
@@ -221,4 +225,9 @@ int MiMU::ease(int previous, int current) {
 
 void MiMU::toggleGlover() {
     usingGlover = !usingGlover;
+}
+
+void MiMU::setForwards() {
+    forwardQuaternion = quaternion;
+    forwardOrientation = orientation;
 }

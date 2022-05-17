@@ -28,9 +28,15 @@ void ofApp::setup(){
 
 
     rightGlove.setup();
-    debugMode = true;
+    debugMode = false;
 
     ofSetFrameRate(30);
+
+    mySphereRadius = 40;
+    int paramGridSizeX = 40;
+    int paramGridSizeY = 50;
+    ofPrimitiveMode curDisplayMode = OF_PRIMITIVE_TRIANGLES;
+    myParticleSystem.setupSphere(paramGridSizeX, paramGridSizeY, mySphereRadius, curDisplayMode);
 
     //3D graphics setup
     ofEnableNormalizedTexCoords();
@@ -39,9 +45,34 @@ void ofApp::setup(){
     light.setPointLight();
     light.setDiffuseColor(ofColor(255));
     light.setPosition(500, 0, 300);
+
+    	// Setup material to use on the particle mesh
+	myMeshMaterial.setDiffuseColor(ofFloatColor(0.2, 0.5, 0.7));
+	myMeshMaterial.setSpecularColor(ofFloatColor(0.7, 0.7, 0.7));
+	myMeshMaterial.setAmbientColor(ofFloatColor(0.1, 0.1, 0.2));
+	myMeshMaterial.setShininess(50.0);
+
+	// Setup lights (settings for discrete GPU)
+	myLight1.setDiffuseColor(ofFloatColor(1.0, 1.0, 1.0));
+	myLight1.setSpecularColor(myLight1.getDiffuseColor());
+	myLight1.setPosition(vec3(120.0, 50.0, 120.0));
+
+	myLight2.setDiffuseColor(ofFloatColor(1.0, 1.0, 1.0));
+	myLight2.setSpecularColor(myLight2.getDiffuseColor());
+	myLight2.setPosition(vec3(-120.0, 50.0, -120.0));
     
     box.setPosition(-50,50,0);
     box.set(200, 100, 100);
+
+    metaballShader.load("metaball");
+    
+    for(int i = 0; i<numBalls; i++) {
+        Metaball metaball;
+        metaballs.push_back(metaball);
+    }
+
+    // ofDisableArbTex();
+
 }
 
 //--------------------------------------------------------------
@@ -49,10 +80,18 @@ void ofApp::update(){
     
     rightGlove.update();
 
+    // Update the particles
+    //amplitude, frequency, scale
+	myParticleSystem.update(5.0, 1.0, 1.0);
+
     if(debugMode) {
         devUpdate();
     } else {
         performUpdate();
+    }
+
+    for( int i = 0; i< numBalls; i++) {
+        metaballs[i].update();
     }
 
 }
@@ -222,84 +261,33 @@ void ofApp::performUpdate() {
             switch (gestureSwitch) {
                 //finger point
                 case 0:
-                    //choose based on page
-                    if(page == 0) {
-                        // pitch
-                        cc = 16;
-                    } else if (page == 1) {
-                        // portamento
-                        cc = 22;
-                    } else {
-                        // expression pedal
-                        cc = 4;
-                    }
+                    //mix
+                    cc = 18;
                     break;
                 //fist
                 case 1:
-                    //control tempo
-                    //choose based on page
-                    if(page == 0) {
-                        // filter
-                        cc = 17;
-                    } else if (page == 1) {
-                        // filter type
-                        cc = 23;
-                    } else {
-                        // env type
-                        cc = 9;
-                    }
+                    //preset selection
+                    cc = 127;
                     break;
-                // open hand
+                // open hand - default
                 case 2:
-                    if(page == 0) {
-                        // mix
-                        cc = 18;
-                    } else if (page == 1) {
-                        // delay level
-                        cc = 24;
-                    } else {
-                        // tempo
-                        cc = 15;
-                    }
+                    //exp
+                    cc = 4;
                     break;
                 // OK hand
                 case 3:
-                    if(page == 0) {
-                        // sustain
-                        cc = 19;
-                    } else if (page == 1) {
-                        // ring mod
-                        cc = 25;
-                    } else {
-                        // synth mode
-                        cc = 29;
-                    }
+                    //delay feedback
+                    cc = 27;
                     break;
                 // climber
                 case 4:
-                    if (page == 0) {
-                        // filter env
-                        cc = 20;
-                    } else if (page == 1) {
-                        // filter bandwidth
-                        cc = 26;
-                    } else {
-                        // channel
-                        cc = 127;
-                    }
+                    // delay level
+                    cc = 24;
                     break;
                 // pupper hand
                 case 5:
-                    if (page == 0) {
-                        //modulation
-                        cc = 21;
-                    } else if (page == 1) {
-                        // delay feedback
-                        cc = 27;
-                    } else {
-                        // bypass
-                        cc = 14;
-                    }
+                    //ring mod
+                    cc = 25;
                     break;
                 default:
                     break;
@@ -308,7 +296,11 @@ void ofApp::performUpdate() {
             cout<<cc<<endl;
             // cout<<"velocity"<<velocity<<endl;
             if(cc == 127) {
-                // code that switches the midi channel    
+                    // code that changes preset based on direction  
+                    // accesses the first 6 presets
+                    if(rightGlove.direction != currentPgm) midiOut.sendProgramChange(channel, rightGlove.direction);
+                    currentPgm = rightGlove.direction;
+                    cout<< "program change " << rightGlove.direction << endl;
             } else {
                     midiOut.sendControlChange(channel, cc, velocity);
             }
@@ -318,6 +310,8 @@ void ofApp::performUpdate() {
 //--------------------------------------------------------------
 void ofApp::draw(){
   ofSetColor(255);
+
+    //   ofDisableArbTex();
 
   //-------RAPID-MIX---------------//
     std::vector<double> trainingInput;
@@ -384,7 +378,7 @@ void ofApp::draw(){
     
     light.enable();
     
-    material.begin();
+    // material.begin();
 
     glPushMatrix();
     if(rightGlove.usingGlover) {
@@ -392,22 +386,60 @@ void ofApp::draw(){
         eased.x = rightGlove.ease(prevOrientation.x, rightGlove.orientation.x);
         eased.y = rightGlove.ease(prevOrientation.y, rightGlove.orientation.y);
         eased.z = rightGlove.ease(prevOrientation.z, rightGlove.orientation.z);
-        box.setOrientation(eased);
+        //you run into gimbal lock pretty often
+        ofRotateXRad(eased.x);
+        ofRotateYRad(eased.y);
+        ofRotateZRad(eased.z);
         prevOrientation = eased;
     } else {
-        vec4 easedQ;
+        quat easedQ;
         easedQ.x = rightGlove.ease(prevQuaternion.x, rightGlove.quaternion.x);
         easedQ.y = rightGlove.ease(prevQuaternion.y, rightGlove.quaternion.y);
         easedQ.z = rightGlove.ease(prevQuaternion.z, rightGlove.quaternion.z);
         easedQ.w = rightGlove.ease(prevQuaternion.w, rightGlove.quaternion.w);
-        box.setOrientation(easedQ);
+
+        //for now this works but its broken
+        ofRotateRad(easedQ.w*2, easedQ.x, easedQ.y, easedQ.z);
+        //rotate quaternion
         prevQuaternion = easedQ;
     }
-    box.draw();
+
+        float sumX = 0, sumY = 0, radii = 0;
+   
+    //set the data in groups of three, for each parameter
+    for(int i = 0; i<numBalls; i++) {
+        
+        //feature extraction for shader
+        data[i*3] = metaballs[i].pos.x;
+        data[i*3+1] = metaballs[i].pos.y;
+        data[i*3+2] = metaballs[i].radius;
+        
+        
+    }
+    
+    avgX = sumX/numBalls;
+    avgY = sumY/numBalls;
+    avgRadius = radii/numBalls;
+    
+    metaballShader.begin();
+    
+    metaballShader.setUniform3fv("metaballs", data, numBalls);
+    metaballShader.setUniform1i("num_balls", numBalls);
+    metaballShader.setUniform1f("HEIGHT", ofGetHeight());
+    metaballShader.setUniform1f("WIDTH", ofGetWidth());
+    
+    // ofDrawRectangle(0,0,ofGetWidth(), ofGetHeight());
+    myParticleSystem.draw();
+
+    metaballShader.end();
+	// Draw the particles
+	// myMeshMaterial.begin();
+
+	// myMeshMaterial.end();
     glPopMatrix();
 
     //disable everything
-    material.end();
+    // material.end();
     light.disable();
     ofDisableLighting();
     cam.end();
@@ -468,11 +500,17 @@ void ofApp::keyReleased(int key){
 			currentPgm = (int) ofClamp(currentPgm-1, 0, 16);
 			midiOut << ProgramChange(channel, currentPgm); // stream interface
 			break;
-		// print the port list
-                // g
+        // g
         case 103:
             rightGlove.toggleGlover();
+            rightGlove.setup();
             break;
+        // d
+        case 100:
+            debugMode = !debugMode;
+        //f for forwards
+        case 102:
+            rightGlove.setForwards();
 		case '?':
 			midiOut.listOutPorts();
 			break;

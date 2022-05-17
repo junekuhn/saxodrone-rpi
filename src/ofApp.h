@@ -5,6 +5,8 @@
 #include "ofxOsc.h"
 #include "ofxRapidLib.h"
 #include "MiMU.h"
+#include "ParticleSystem.h"
+#include "Metaball.hpp"
 
 # define GLOVER 9000
 # define GLOVE 8216
@@ -40,7 +42,7 @@ class ofApp : public ofBaseApp{
 
 		int prevVelocity = 0;
 		vec3 prevOrientation = vec3(0,0,0);
-		vec4 prevQuaternion = vec4(0,0,0,0);
+		quat prevQuaternion = quat(0,0,0,0);
 
 		bool isRPI = true;
 
@@ -49,7 +51,17 @@ class ofApp : public ofBaseApp{
 		ofEasyCam cam;
 		ofLight light;
 		ofMaterial material;
+		ofMaterial myMeshMaterial;
 		ofBoxPrimitive box;
+		ofLight myLight1;
+		ofLight myLight2;
+		ofTexture mTex;
+
+
+		float mySphereRadius;
+		int mySetupMode; // 0 = plane, 1 = sphere, 2 = custom mesh
+		ofMesh myInitialMesh;
+		ParticleSystem myParticleSystem;
 
 		//rapidmix
 		std::vector<rapidLib::trainingExample> myData;
@@ -58,6 +70,20 @@ class ofApp : public ofBaseApp{
 		bool runToggle;
 		int result;
 		bool pageToggle;
+
+		//metaballs
+		    ofShader metaballShader;
+    
+		//needs to be const static to declare array
+		const static int numBalls = 10;
+		vector <Metaball> metaballs;
+
+		//setunifrom3fv only accepts float *
+		float data[numBalls*3];
+		float amplitudes[numBalls];
+		float frequencies[numBalls];
+
+		float avgX, avgY, avgRadius;
 
 
 };

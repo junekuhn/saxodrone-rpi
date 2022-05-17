@@ -832,7 +832,10 @@ obj/osx/Release/src/ofApp.o: \
   /Users/mx/code/oF/addons/ofxRapidLib/libs/warpPath.h \
   /Users/mx/code/oF/addons/ofxRapidLib/libs/rapidStream.h \
   /Users/mx/code/oF/addons/ofxRapidLib/libs/../libs/dependencies/bayesfilter/BayesianFilter.h \
-  /Users/mx/code/oF/apps/myApps/saxodrone-rpi/src/MiMU.h
+  /Users/mx/code/oF/apps/myApps/saxodrone-rpi/src/MiMU.h \
+  /Users/mx/code/oF/apps/myApps/saxodrone-rpi/src/ParticleSystem.h \
+  /Users/mx/code/oF/apps/myApps/saxodrone-rpi/src/Particle.h \
+  /Users/mx/code/oF/apps/myApps/saxodrone-rpi/src/Metaball.hpp
 
 /Users/mx/code/oF/apps/myApps/saxodrone-rpi/src/ofApp.h:
 
@@ -2499,3 +2502,9 @@ obj/osx/Release/src/ofApp.o: \
 /Users/mx/code/oF/addons/ofxRapidLib/libs/../libs/dependencies/bayesfilter/BayesianFilter.h:
 
 /Users/mx/code/oF/apps/myApps/saxodrone-rpi/src/MiMU.h:
+
+/Users/mx/code/oF/apps/myApps/saxodrone-rpi/src/ParticleSystem.h:
+
+/Users/mx/code/oF/apps/myApps/saxodrone-rpi/src/Particle.h:
+
+/Users/mx/code/oF/apps/myApps/saxodrone-rpi/src/Metaball.hpp:

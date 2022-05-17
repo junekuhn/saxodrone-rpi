@@ -23,6 +23,10 @@ class MiMU {
 		string gestureLookup(int gesture);
 		string directionLookup(int direction);
 
+		void setForwards();
+		vec3 forwardOrientation;
+		quat forwardQuaternion;
+
 		//incoming features
 		vec3 orientation;
 		vec3 gyro;
