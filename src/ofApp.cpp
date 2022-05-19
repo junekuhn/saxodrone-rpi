@@ -66,12 +66,12 @@ void ofApp::setup(){
     box.setPosition(-50,50,0);
     box.set(200, 100, 100);
 
-    metaballShader.load("metaball");
+    // metaballShader.load("metaball");
     
-    for(int i = 0; i<numBalls; i++) {
-        Metaball metaball;
-        metaballs.push_back(metaball);
-    }
+    // for(int i = 0; i<numBalls; i++) {
+    //     Metaball metaball;
+    //     metaballs.push_back(metaball);
+    // }
 
     // ofDisableArbTex();
 
@@ -92,9 +92,9 @@ void ofApp::update(){
         performUpdate();
     }
 
-    for( int i = 0; i< numBalls; i++) {
-        metaballs[i].update();
-    }
+    // for( int i = 0; i< numBalls; i++) {
+    //     metaballs[i].update();
+    // }
 
 }
 
@@ -406,22 +406,22 @@ void ofApp::draw(){
         prevQuaternion = easedQ;
     }
 
-        float sumX = 0, sumY = 0, radii = 0;
+    //     float sumX = 0, sumY = 0, radii = 0;
    
-    //set the data in groups of three, for each parameter
-    for(int i = 0; i<numBalls; i++) {
+    // //set the data in groups of three, for each parameter
+    // for(int i = 0; i<numBalls; i++) {
         
-        //feature extraction for shader
-        data[i*3] = metaballs[i].pos.x;
-        data[i*3+1] = metaballs[i].pos.y;
-        data[i*3+2] = metaballs[i].radius;
+    //     //feature extraction for shader
+    //     data[i*3] = metaballs[i].pos.x;
+    //     data[i*3+1] = metaballs[i].pos.y;
+    //     data[i*3+2] = metaballs[i].radius;
         
         
-    }
+    // }
     
-    avgX = sumX/numBalls;
-    avgY = sumY/numBalls;
-    avgRadius = radii/numBalls;
+    // avgX = sumX/numBalls;
+    // avgY = sumY/numBalls;
+    // avgRadius = radii/numBalls;
     
     // metaballShader.begin();
     

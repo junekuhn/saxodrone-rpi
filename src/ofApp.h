@@ -6,7 +6,7 @@
 #include "ofxRapidLib.h"
 #include "MiMU.h"
 #include "ParticleSystem.h"
-#include "Metaball.hpp"
+// #include "Metaball.hpp"
 
 # define GLOVER 9000
 # define GLOVE 8216
@@ -72,18 +72,18 @@ class ofApp : public ofBaseApp{
 		bool pageToggle;
 
 		//metaballs
-		    ofShader metaballShader;
+		    // ofShader metaballShader;
     
 		//needs to be const static to declare array
-		const static int numBalls = 10;
-		vector <Metaball> metaballs;
+		// const static int numBalls = 10;
+		// vector <Metaball> metaballs;
 
 		//setunifrom3fv only accepts float *
-		float data[numBalls*3];
-		float amplitudes[numBalls];
-		float frequencies[numBalls];
+		// float data[numBalls*3];
+		// float amplitudes[numBalls];
+		// float frequencies[numBalls];
 
-		float avgX, avgY, avgRadius;
+		// float avgX, avgY, avgRadius;
 
 
 };
