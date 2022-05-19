@@ -125,8 +125,11 @@ void ofApp::devUpdate() {
             }
 
             if(!rightGlove.usingGlover){
-                velocity  = ofMap(rightGlove.pitch, -1, 1, 127, 0);
+                velocity  = ofMap(rightGlove.pitch, -M_PI/2, M_PI/2, 127, -127);
 
+                if(velocity<0) {
+                    velocity = 0;
+                }
             } else {
                 velocity = rightGlove.pitch;
             }
@@ -286,17 +289,17 @@ void ofApp::performUpdate() {
                     // delay level
                     cc = 24;
                     break;
-                // pupper hand
+                // puppet hand
                 case 5:
-                    //ring mod
-                    cc = 25;
+                    //portamento
+                    cc = 22;
                     break;
                 default:
                     break;
 
             }
-            cout<<cc<<endl;
-            // cout<<"velocity"<<velocity<<endl;
+            // cout<<cc<<endl;
+            cout<<"velocity"<<velocity<<endl;
             if(cc == 127) {
                     // code that changes preset based on direction  
                     // accesses the first 6 presets
@@ -510,9 +513,16 @@ void ofApp::keyReleased(int key){
         // d
         case 100:
             debugMode = !debugMode;
+            break;
         //f for forwards
         case 102:
             rightGlove.setForwards();
+            break;
+        //b for button (gesturemode)
+        case 98:
+            rightGlove.toggleGestureMode();
+            break;
+
 		case '?':
 			midiOut.listOutPorts();
 			break;

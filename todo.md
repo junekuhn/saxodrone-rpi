@@ -1,5 +1,9 @@
 
 //todo
+
+figure out direction from quaternion
+
+
 figure out how to save and load the gesture data
  - save the trained model
  - each example is a vector of doubles
@@ -22,6 +26,7 @@ graphics
   - fractialBrownian
   - texturemapping for equirectangular
 
+DEVELOPMENT MODE
 
 6 gestures - fist, open hand, one finger point, climber, puppet, ok
 page 1 - pitch, filter, mix, sus, env, mod
@@ -29,8 +34,15 @@ page 2 - alt params
 page 3 - exp, env type, tempo, synth mode, channel?, program?
 
 PERFORMANCE MODE  
-exp (usually pitch), delay amt, delay feedback, ring mod, preset selection?
-open hand, climber, ok, puppet, one finger point, fist, 
+
+0 - finger point - mix - cc18
+1 - fist - preset selection - program change 1-6
+2 - open hand - exp - cc4
+3 - ok - delay feedback - cc27
+4 - climber - delay level - cc24
+5 - puppet hand - portamento - cc22
+
+
 change channel, what is the cc going to be ???
 haptic feedback
 using sysex to send and receive presets

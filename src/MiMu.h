@@ -22,6 +22,8 @@ class MiMU {
         ofxOscReceiver rx;
 		string gestureLookup(int gesture);
 		string directionLookup(int direction);
+		void setDirection();
+		void toggleGestureMode();
 
 		void setForwards();
 		vec3 forwardOrientation;

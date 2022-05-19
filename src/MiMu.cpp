@@ -1,4 +1,5 @@
 #include "MiMU.h"
+#include <cmath>
 
 void MiMU::setup() {
     orientation = vec3(0.,0.,0.);
@@ -35,6 +36,8 @@ void MiMU::update() {
             if(m.getAddress() == "/roll"){
                 // should be from 0 to 2pi
                 orientation.x = m.getArgAsFloat(0);
+                roll = orientation.x;
+
             }
             // check for mouse button message
             // x is roll
@@ -43,6 +46,7 @@ void MiMU::update() {
             else if(m.getAddress() == "/pitch"){
                 //should be coming in from 0 to 3.14
                 orientation.z = m.getArgAsFloat(0);
+                pitch = orientation.z;
             } else if (m.getAddress() == "/yaw") {
                 // should be coming in at 0 to 6.28
                 orientation.y = m.getArgAsFloat(0);    
@@ -79,6 +83,13 @@ void MiMU::update() {
                 quaternion.y = m.getArgAsFloat(1);
                 quaternion.z = m.getArgAsFloat(2);
                 quaternion.w = m.getArgAsFloat(3);
+
+                //get pitch, roll, and yaw
+                pitch = glm::pitch(quaternion);
+                roll = glm::roll(quaternion);
+                yaw = glm::yaw(quaternion);
+
+                setDirection();
             }
             else if (m.getAddress() == "/glove/bend") {
                 for(int i = 0; i<8; i++) {
@@ -107,25 +118,6 @@ void MiMU::update() {
         }
 		
     }
-
-    if(usingGlover) {
-        roll = orientation.x;
-        pitch = orientation.z;
-    } else {
-        // pitch = eulerAngles(quaternion).z;
-        // //this shouldn't be yaw, but it is :(
-        // yaw = eulerAngles(quaternion).x;
-        // //this shouldn't be pitch, but it is :(
-        // roll = eulerAngles(quaternion).y;
-
-        // from 
-        // yaw = accel.x;
-        //from -1 to 1
-        pitch = accel.x;
-        //from -1 to 1
-        roll = accel.z;
-    }
-
 }
 
 void MiMU::draw(int result) {
@@ -227,7 +219,40 @@ void MiMU::toggleGlover() {
     usingGlover = !usingGlover;
 }
 
+void MiMU::toggleGestureMode() {
+    gestureMode = !gestureMode;
+}
+
 void MiMU::setForwards() {
     forwardQuaternion = quaternion;
     forwardOrientation = orientation;
+}
+
+void MiMU::setDirection() {
+
+
+    //if the angle is greater than PI/4, it's up or down
+    if(pitch > M_PI/4 || pitch < -M_PI/4) {
+        if(pitch > 0) {
+            //up
+            direction = 4; 
+        } else {
+            //down
+            direction = 5;
+        }
+    } else {
+        if(roll > -M_PI && roll < -M_PI/2) {
+            // back
+            direction = 1;
+        } else if(roll >= -M_PI/2 && roll < 0) {
+            // right
+            direction = 3;
+        } else if(roll >= 0 && roll < M_PI/2) {
+            // forwards
+            direction = 0;    
+        } else if(roll >= M_PI/2 && roll < M_PI) {
+            // left
+            direction = 2;
+        }
+    }
 }
