@@ -1,6 +1,6 @@
-obj/linuxarmv6l/Release/src/ofApp.o: \
- /home/pi/openFrameworks/apps/myApps/saxodrone-rpi/src/ofApp.cpp \
- /home/pi/openFrameworks/apps/myApps/saxodrone-rpi/src/ofApp.h \
+obj/linuxarmv6l/Release/src/MiMU.o: \
+ /home/pi/openFrameworks/apps/myApps/saxodrone-rpi/src/MiMU.cpp \
+ /home/pi/openFrameworks/apps/myApps/saxodrone-rpi/src/MiMU.h \
  /home/pi/openFrameworks/libs/openFrameworks/ofMain.h \
  /home/pi/openFrameworks/libs/openFrameworks/utils/ofConstants.h \
  /opt/vc/include/bcm_host.h \
@@ -626,18 +626,6 @@ obj/linuxarmv6l/Release/src/ofApp.o: \
  /home/pi/openFrameworks/libs/openFrameworks/3d/of3dUtils.h \
  /home/pi/openFrameworks/libs/openFrameworks/3d/ofCamera.h \
  /home/pi/openFrameworks/libs/openFrameworks/3d/ofEasyCam.h \
- /home/pi/openFrameworks/addons/ofxMidi/src/ofxMidi.h \
- /home/pi/openFrameworks/addons/ofxMidi/src/ofxMidiIn.h \
- /home/pi/openFrameworks/addons/ofxMidi/src/ofxBaseMidi.h \
- /home/pi/openFrameworks/addons/ofxMidi/src/ofxMidiConstants.h \
- /home/pi/openFrameworks/addons/ofxMidi/src/ofxMidiMessage.h \
- /home/pi/openFrameworks/addons/ofxMidi/src/ofxMidiTypes.h \
- /home/pi/openFrameworks/addons/ofxMidi/src/desktop/ofxRtMidiIn.h \
- /home/pi/openFrameworks/addons/ofxMidi/libs/rtmidi/RtMidi.h \
- /home/pi/openFrameworks/addons/ofxMidi/src/ofxMidiOut.h \
- /home/pi/openFrameworks/addons/ofxMidi/src/desktop/ofxRtMidiOut.h \
- /home/pi/openFrameworks/addons/ofxMidi/src/ofxMidiClock.h \
- /home/pi/openFrameworks/addons/ofxMidi/src/ofxMidiTimecode.h \
  /home/pi/openFrameworks/addons/ofxOsc/src/ofxOsc.h \
  /home/pi/openFrameworks/addons/ofxOsc/src/ofxOscArg.h \
  /home/pi/openFrameworks/addons/ofxOsc/src/ofxOscMessage.h \
@@ -670,12 +658,9 @@ obj/linuxarmv6l/Release/src/ofApp.o: \
  /home/pi/openFrameworks/addons/ofxRapidLib/src/../libs/fastDTW.h \
  /home/pi/openFrameworks/addons/ofxRapidLib/src/../libs/warpPath.h \
  /home/pi/openFrameworks/addons/ofxRapidLib/src/../libs/rapidStream.h \
- /home/pi/openFrameworks/addons/ofxRapidLib/src/../libs/../libs/dependencies/bayesfilter/BayesianFilter.h \
- /home/pi/openFrameworks/apps/myApps/saxodrone-rpi/src/MiMU.h \
- /home/pi/openFrameworks/apps/myApps/saxodrone-rpi/src/ParticleSystem.h \
- /home/pi/openFrameworks/apps/myApps/saxodrone-rpi/src/Particle.h
+ /home/pi/openFrameworks/addons/ofxRapidLib/src/../libs/../libs/dependencies/bayesfilter/BayesianFilter.h
 
-/home/pi/openFrameworks/apps/myApps/saxodrone-rpi/src/ofApp.h:
+/home/pi/openFrameworks/apps/myApps/saxodrone-rpi/src/MiMU.h:
 
 /home/pi/openFrameworks/libs/openFrameworks/ofMain.h:
 
@@ -1971,30 +1956,6 @@ obj/linuxarmv6l/Release/src/ofApp.o: \
 
 /home/pi/openFrameworks/libs/openFrameworks/3d/ofEasyCam.h:
 
-/home/pi/openFrameworks/addons/ofxMidi/src/ofxMidi.h:
-
-/home/pi/openFrameworks/addons/ofxMidi/src/ofxMidiIn.h:
-
-/home/pi/openFrameworks/addons/ofxMidi/src/ofxBaseMidi.h:
-
-/home/pi/openFrameworks/addons/ofxMidi/src/ofxMidiConstants.h:
-
-/home/pi/openFrameworks/addons/ofxMidi/src/ofxMidiMessage.h:
-
-/home/pi/openFrameworks/addons/ofxMidi/src/ofxMidiTypes.h:
-
-/home/pi/openFrameworks/addons/ofxMidi/src/desktop/ofxRtMidiIn.h:
-
-/home/pi/openFrameworks/addons/ofxMidi/libs/rtmidi/RtMidi.h:
-
-/home/pi/openFrameworks/addons/ofxMidi/src/ofxMidiOut.h:
-
-/home/pi/openFrameworks/addons/ofxMidi/src/desktop/ofxRtMidiOut.h:
-
-/home/pi/openFrameworks/addons/ofxMidi/src/ofxMidiClock.h:
-
-/home/pi/openFrameworks/addons/ofxMidi/src/ofxMidiTimecode.h:
-
 /home/pi/openFrameworks/addons/ofxOsc/src/ofxOsc.h:
 
 /home/pi/openFrameworks/addons/ofxOsc/src/ofxOscArg.h:
@@ -2060,9 +2021,3 @@ obj/linuxarmv6l/Release/src/ofApp.o: \
 /home/pi/openFrameworks/addons/ofxRapidLib/src/../libs/rapidStream.h:
 
 /home/pi/openFrameworks/addons/ofxRapidLib/src/../libs/../libs/dependencies/bayesfilter/BayesianFilter.h:
-
-/home/pi/openFrameworks/apps/myApps/saxodrone-rpi/src/MiMU.h:
-
-/home/pi/openFrameworks/apps/myApps/saxodrone-rpi/src/ParticleSystem.h:
-
-/home/pi/openFrameworks/apps/myApps/saxodrone-rpi/src/Particle.h:

@@ -1,5 +1,5 @@
 obj/linuxarmv6l/Release/src/main.o: \
- /home/pi/openFrameworks/apps/myApps/Saxodrone/src/main.cpp \
+ /home/pi/openFrameworks/apps/myApps/saxodrone-rpi/src/main.cpp \
  /home/pi/openFrameworks/libs/openFrameworks/ofMain.h \
  /home/pi/openFrameworks/libs/openFrameworks/utils/ofConstants.h \
  /opt/vc/include/bcm_host.h \
@@ -625,7 +625,7 @@ obj/linuxarmv6l/Release/src/main.o: \
  /home/pi/openFrameworks/libs/openFrameworks/3d/of3dUtils.h \
  /home/pi/openFrameworks/libs/openFrameworks/3d/ofCamera.h \
  /home/pi/openFrameworks/libs/openFrameworks/3d/ofEasyCam.h \
- /home/pi/openFrameworks/apps/myApps/Saxodrone/src/ofApp.h \
+ /home/pi/openFrameworks/apps/myApps/saxodrone-rpi/src/ofApp.h \
  /home/pi/openFrameworks/addons/ofxMidi/src/ofxMidi.h \
  /home/pi/openFrameworks/addons/ofxMidi/src/ofxMidiIn.h \
  /home/pi/openFrameworks/addons/ofxMidi/src/ofxBaseMidi.h \
@@ -670,7 +670,10 @@ obj/linuxarmv6l/Release/src/main.o: \
  /home/pi/openFrameworks/addons/ofxRapidLib/src/../libs/fastDTW.h \
  /home/pi/openFrameworks/addons/ofxRapidLib/src/../libs/warpPath.h \
  /home/pi/openFrameworks/addons/ofxRapidLib/src/../libs/rapidStream.h \
- /home/pi/openFrameworks/addons/ofxRapidLib/src/../libs/../libs/dependencies/bayesfilter/BayesianFilter.h
+ /home/pi/openFrameworks/addons/ofxRapidLib/src/../libs/../libs/dependencies/bayesfilter/BayesianFilter.h \
+ /home/pi/openFrameworks/apps/myApps/saxodrone-rpi/src/MiMU.h \
+ /home/pi/openFrameworks/apps/myApps/saxodrone-rpi/src/ParticleSystem.h \
+ /home/pi/openFrameworks/apps/myApps/saxodrone-rpi/src/Particle.h
 
 /home/pi/openFrameworks/libs/openFrameworks/ofMain.h:
 
@@ -1966,7 +1969,7 @@ obj/linuxarmv6l/Release/src/main.o: \
 
 /home/pi/openFrameworks/libs/openFrameworks/3d/ofEasyCam.h:
 
-/home/pi/openFrameworks/apps/myApps/Saxodrone/src/ofApp.h:
+/home/pi/openFrameworks/apps/myApps/saxodrone-rpi/src/ofApp.h:
 
 /home/pi/openFrameworks/addons/ofxMidi/src/ofxMidi.h:
 
@@ -2057,3 +2060,9 @@ obj/linuxarmv6l/Release/src/main.o: \
 /home/pi/openFrameworks/addons/ofxRapidLib/src/../libs/rapidStream.h:
 
 /home/pi/openFrameworks/addons/ofxRapidLib/src/../libs/../libs/dependencies/bayesfilter/BayesianFilter.h:
+
+/home/pi/openFrameworks/apps/myApps/saxodrone-rpi/src/MiMU.h:
+
+/home/pi/openFrameworks/apps/myApps/saxodrone-rpi/src/ParticleSystem.h:
+
+/home/pi/openFrameworks/apps/myApps/saxodrone-rpi/src/Particle.h:
