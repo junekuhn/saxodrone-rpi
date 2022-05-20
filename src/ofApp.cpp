@@ -11,11 +11,20 @@ void ofApp::setup(){
 
 	// print the available output ports to the console
 	midiOut.listOutPorts();
+    midiIn.listInPorts();
 
     // connect
 	midiOut.openPort(1);
-	//mmidiOut.openPort("IAC Driver Pure Data In"); // by name
-	//midiOut.openVirtualPort("ofxMidiOut"); // open a virtual port
+    midiIn.openPort(1);
+    midiIn.ignoreTypes(false, false, false);
+    // add ofApp as a listener
+	midiIn.addListener(this);
+
+	// print received messages to the console
+	midiIn.setVerbose(true);
+
+	//midiOut.openPort("IAC Driver Pure Data In"); // by name
+
 
     channel = 1;
 	currentPgm = 0;
@@ -49,7 +58,7 @@ void ofApp::setup(){
     light.setPosition(500, 0, 300);
 
     	// Setup material to use on the particle mesh
-	myMeshMaterial.setDiffuseColor(ofFloatColor(0.2, 0.5, 0.7));
+	myMeshMaterial.setDiffuseColor(ofFloatColor(0.905, 0.82, 0.99)); //lilac
 	myMeshMaterial.setSpecularColor(ofFloatColor(0.7, 0.7, 0.7));
 	myMeshMaterial.setAmbientColor(ofFloatColor(0.1, 0.1, 0.2));
 	myMeshMaterial.setShininess(50.0);
@@ -533,4 +542,46 @@ void ofApp::keyReleased(int key){
 
     recordingState = 0;
     if (myData.size() > 0) myKnn.train(myData);
+}
+
+void ofApp::newMidiMessage(ofxMidiMessage& msg) {
+
+	// add the latest message to the message queue
+	midiMessages.push_back(msg);
+
+	// remove any old messages if we have too many
+	while(midiMessages.size() > maxMessages) {
+		midiMessages.erase(midiMessages.begin());
+	}
+}
+
+void ofApp::exit() {
+
+	// clean up
+	midiIn.closePort();
+	midiIn.removeListener(this);
+}
+
+void writeSysexFile(std::vector<unsigned char> &bytes) {
+    string filename = "test";
+    string filePath = ofToDataPath(filename);
+
+        // If the data directory doesn't already exist, create it
+    if (!ofDirectory::doesDirectoryExist("")) {
+        ofDirectory::createDirectory("");
+    }
+
+    ofstream outfile(filePath);
+
+    if (!outfile.is_open()) {
+        cout << "Error: couldn't open file " << filename << " for writing\n";
+        return;
+    }
+
+    for(int i = 0; i<bytes.size(); i++) {
+        outfile << bytes[i];
+    }
+
+    outfile.close();
+
 }

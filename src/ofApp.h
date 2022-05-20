@@ -13,13 +13,15 @@
 
 using namespace glm;
 
-class ofApp : public ofBaseApp{
+class ofApp : public ofBaseApp, public ofxMidiListener {
 	public:
 		void setup();
 		void update();
 		void draw();
 		void devUpdate();
 		void performUpdate();
+		void exit();
+		void writeSysexFile(std::vector<unsigned char> &bytes);
 		
 		void keyPressed(int key);
 		void keyReleased(int key);
@@ -39,6 +41,10 @@ class ofApp : public ofBaseApp{
 		float yaw = 0;
 		int expr, tempo, mix;
 		int page;
+		void newMidiMessage(ofxMidiMessage& eventArgs);
+		ofxMidiIn midiIn;
+		std::vector<ofxMidiMessage> midiMessages;
+		std::size_t maxMessages = 10; //< max number of messages to keep track of
 
 		int prevVelocity = 0;
 		vec3 prevOrientation = vec3(0,0,0);

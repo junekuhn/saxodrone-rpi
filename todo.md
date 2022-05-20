@@ -1,8 +1,20 @@
 
 //todo
 
-figure out direction from quaternion
+1. try editing and saving a preset without sysex
+2. where does exp come into play
 
+
+midi sysex
+To send a preset from the Enzo to your computer by pressing
+the Bypass LED switch while holding the Alt button. 
+
+1. receive sysex data and print it to console (test this before moving on)
+2. save sysex data to a file with a unique name
+3. try to recover my presets by going to preset mode
+4. try to send my recovered presets to the first 4 programs
+
+figure out direction from quaternion
 
 figure out how to save and load the gesture data
  - save the trained model
@@ -45,5 +57,4 @@ PERFORMANCE MODE
 
 change channel, what is the cc going to be ???
 haptic feedback
-using sysex to send and receive presets
 
