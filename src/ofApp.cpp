@@ -2,6 +2,7 @@
 #include <math.h>
 
 using namespace glm;
+using namespace std;
 
 
 //--------------------------------------------------------------
@@ -43,7 +44,7 @@ void ofApp::setup(){
 
     ofSetFrameRate(30);
 
-    mySphereRadius = 400;
+    mySphereRadius = 300;
     int paramGridSizeX = 40;
     int paramGridSizeY = 50;
     ofPrimitiveMode curDisplayMode = OF_PRIMITIVE_TRIANGLES;
@@ -93,7 +94,7 @@ void ofApp::update(){
 
     // Update the particles
     //amplitude, frequency, scale
-	myParticleSystem.update(5.0, 1.0, 1.0);
+	myParticleSystem.update(8.0, 1.0, 3.0);
 
     if(debugMode) {
         devUpdate();
