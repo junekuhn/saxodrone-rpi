@@ -14,9 +14,9 @@ class MiMU {
 
         void setup();
 		void update();
-		void draw(int result);
+		void draw(int result, bool usingPhone);
 
-		bool usingGlover = true;
+		bool usingGlover = false;
 		void toggleGlover();
 
         ofxOscReceiver rx;

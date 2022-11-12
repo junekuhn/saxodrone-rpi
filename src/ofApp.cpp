@@ -8,7 +8,15 @@ using namespace std;
 //--------------------------------------------------------------
 void ofApp::setup(){
 
-    ofBackground(0);
+
+    ofSetBackgroundAuto(false);
+    ofEnableAlphaBlending();
+    ofSetCircleResolution(6);
+    ofSetFrameRate(20);
+    
+    cutoff = 300;
+    recursionCounter = 0;
+    scale = 0.45;
 
 	// print the available output ports to the console
 	midiOut.listOutPorts();
@@ -41,40 +49,42 @@ void ofApp::setup(){
 
     rightGlove.setup();
     debugMode = false;
+    usingPhone = false;
+    helpMode = true;
 
     ofSetFrameRate(30);
 
     mySphereRadius = 300;
     int paramGridSizeX = 40;
     int paramGridSizeY = 50;
-    ofPrimitiveMode curDisplayMode = OF_PRIMITIVE_TRIANGLES;
-    myParticleSystem.setupSphere(paramGridSizeX, paramGridSizeY, mySphereRadius, curDisplayMode);
+    // ofPrimitiveMode curDisplayMode = OF_PRIMITIVE_TRIANGLES;
+    // myParticleSystem.setupSphere(paramGridSizeX, paramGridSizeY, mySphereRadius, curDisplayMode);
 
-    //3D graphics setup
-    ofEnableNormalizedTexCoords();
-    material.setDiffuseColor(ofColor(255, 0, 0));
+    // //3D graphics setup
+    // ofEnableNormalizedTexCoords();
+    // // material.setDiffuseColor(ofColor(255, 0, 0));
     
-    light.setPointLight();
-    light.setDiffuseColor(ofColor(255));
-    light.setPosition(500, 0, 300);
+    // light.setPointLight();
+    // light.setDiffuseColor(ofColor(255));
+    // light.setPosition(500, 0, 300);
 
     	// Setup material to use on the particle mesh
-	myMeshMaterial.setDiffuseColor(ofFloatColor(0.905, 0.82, 0.99)); //lilac
-	myMeshMaterial.setSpecularColor(ofFloatColor(0.7, 0.7, 0.7));
-	myMeshMaterial.setAmbientColor(ofFloatColor(0.1, 0.1, 0.2));
-	myMeshMaterial.setShininess(50.0);
+	// myMeshMaterial.setDiffuseColor(ofFloatColor(0.905, 0.82, 0.99)); //lilac
+	// myMeshMaterial.setSpecularColor(ofFloatColor(0.7, 0.7, 0.7));
+	// myMeshMaterial.setAmbientColor(ofFloatColor(0.1, 0.1, 0.2));
+	// myMeshMaterial.setShininess(50.0);
 
-	// Setup lights (settings for discrete GPU)
-	myLight1.setDiffuseColor(ofFloatColor(1.0, 1.0, 1.0));
-	myLight1.setSpecularColor(myLight1.getDiffuseColor());
-	myLight1.setPosition(vec3(120.0, 50.0, 120.0));
+	// // Setup lights (settings for discrete GPU)
+	// myLight1.setDiffuseColor(ofFloatColor(1.0, 1.0, 1.0));
+	// myLight1.setSpecularColor(myLight1.getDiffuseColor());
+	// myLight1.setPosition(vec3(120.0, 50.0, 120.0));
 
-	myLight2.setDiffuseColor(ofFloatColor(1.0, 1.0, 1.0));
-	myLight2.setSpecularColor(myLight2.getDiffuseColor());
-	myLight2.setPosition(vec3(-120.0, 50.0, -120.0));
+	// myLight2.setDiffuseColor(ofFloatColor(1.0, 1.0, 1.0));
+	// myLight2.setSpecularColor(myLight2.getDiffuseColor());
+	// myLight2.setPosition(vec3(-120.0, 50.0, -120.0));
     
-    box.setPosition(-50,50,0);
-    box.set(200, 100, 100);
+    // box.setPosition(-50,50,0);
+    // box.set(200, 100, 100);
 
     // metaballShader.load("metaball");
     
@@ -92,20 +102,13 @@ void ofApp::update(){
     
     rightGlove.update();
 
-    // Update the particles
-    //amplitude, frequency, scale
-	myParticleSystem.update(8.0, 1.0, 3.0);
-
     if(debugMode) {
         devUpdate();
     } else {
         performUpdate();
     }
 
-    // for( int i = 0; i< numBalls; i++) {
-    //     metaballs[i].update();
-    // }
-
+    alpha = 255*mouseY/ofGetHeight();
 }
 
 //exposes all midi parameters for testing
@@ -287,6 +290,8 @@ void ofApp::performUpdate() {
                 // open hand - default
                 case 2:
                     //exp
+                    cout<<"changing alpha"<<endl;
+                    alpha = (int) ofMap(velocity, 0, 127, 1, 50);
                     cc = 4;
                     break;
                 // OK hand
@@ -368,8 +373,8 @@ void ofApp::draw(){
         result = myKnn.run(trainingInput)[0];
     }
 
-    if(debugMode) {
-        rightGlove.draw(result);
+    if(helpMode) {
+        rightGlove.draw(result, debugMode);
     }
 
     
@@ -381,18 +386,29 @@ void ofApp::draw(){
         tempExample.output = trainingOutput;
         myData.push_back(tempExample);
     }
-    // begin 3D graphics
-    ofEnableDepthTest();
-    cam.begin();
-      //do all our 3D drawing here
+    // // begin 3D graphics
+    // ofEnableDepthTest();
+    // cam.begin();
+    //   //do all our 3D drawing here
     
-    ofEnableLighting();
+    // ofEnableLighting();
     
-    light.enable();
+    // light.enable();
     
     // material.begin();
 
+
+    recursionCounter = 0;
+    int clearAlpha = alpha;
+    ofSetColor(0, clearAlpha);
+    ofSetRectMode(OF_RECTMODE_CORNER);
+    ofFill();
+    ofDrawRectangle(0, 0, ofGetWidth(), ofGetHeight());
+
+        
     ofPushMatrix();
+    ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
+
     if(rightGlove.usingGlover) {
         vec3 eased;
         eased.x = rightGlove.ease(prevOrientation.x, rightGlove.orientation.x);
@@ -411,7 +427,7 @@ void ofApp::draw(){
         easedQ.w = rightGlove.ease(prevQuaternion.w, rightGlove.quaternion.w);
 
         //for now this works but its broken
-        // ofRotateRad(easedQ.w*2, easedQ.x, easedQ.y, easedQ.z);
+        ofRotateRad(easedQ.w*2, easedQ.x, easedQ.y, easedQ.z);
         ofQuaternion of_quat{ easedQ };
         ofMatrix4x4 rotation_matrix = ofMatrix4x4::newRotationMatrix( easedQ );
 	    ofMultMatrix(rotation_matrix);
@@ -419,46 +435,18 @@ void ofApp::draw(){
         prevQuaternion = easedQ;
     }
 
-    //     float sumX = 0, sumY = 0, radii = 0;
-   
-    // //set the data in groups of three, for each parameter
-    // for(int i = 0; i<numBalls; i++) {
-        
-    //     //feature extraction for shader
-    //     data[i*3] = metaballs[i].pos.x;
-    //     data[i*3+1] = metaballs[i].pos.y;
-    //     data[i*3+2] = metaballs[i].radius;
-        
-        
-    // }
-    
-    // avgX = sumX/numBalls;
-    // avgY = sumY/numBalls;
-    // avgRadius = radii/numBalls;
-    
-    // metaballShader.begin();
-    
-    // metaballShader.setUniform3fv("metaballs", data, numBalls);
-    // metaballShader.setUniform1i("num_balls", numBalls);
-    // metaballShader.setUniform1f("HEIGHT", ofGetHeight());
-    // metaballShader.setUniform1f("WIDTH", ofGetWidth());
-    
-    // ofDrawRectangle(0,0,ofGetWidth(), ofGetHeight());
-    myMeshMaterial.begin();
-    myParticleSystem.draw();
 
-    // metaballShader.end();
-	// Draw the particles
-	myMeshMaterial.end();
-
+    drawCircle(0,0, 1000);
     ofPopMatrix();
+     
+  
 
-    //disable everything
-    // material.end();
-    light.disable();
-    ofDisableLighting();
-    cam.end();
-    ofDisableDepthTest();
+    // //disable everything
+    // // material.end();
+    // light.disable();
+    // ofDisableLighting();
+    // cam.end();
+    // ofDisableDepthTest();
 
 }
 
@@ -532,7 +520,34 @@ void ofApp::keyReleased(int key){
         case 98:
             rightGlove.toggleGestureMode();
             break;
-
+        // p for phone
+        case 112:
+            usingPhone = !usingPhone;
+            break;
+        // h for help mode
+        case 104:
+            helpMode = !helpMode;
+            break;
+        //qwerty for gestures 1-6
+        // q
+        case 113:
+            result = 1;
+            break;
+        case 119:
+            result = 2;
+            break;
+        case 101:
+            result = 3;
+            break;
+        case 114:
+            result = 4;
+            break;
+        case 116:
+            result = 5;
+            break;
+        case 121:
+            result = 6;
+            break;
 		case '?':
 			midiOut.listOutPorts();
 			break;
@@ -585,4 +600,36 @@ void writeSysexFile(std::vector<unsigned char> &bytes) {
 
     outfile.close();
 
+}
+
+void ofApp::drawCircle(float width, float height, float radius) {
+    
+    float hueOffset = 360*sin(ofGetElapsedTimef() * 0.1);
+    ofFill();
+    ofColor color = ofColor::fromHsb(
+                                     (recursionCounter*10) + (rightGlove.direction*20) + (int) (ofGetElapsedTimef()*0.5) %360,
+                                     200,
+                                     255,
+                                     ofMap(radius, 2, 400, 0, 255*0.3));
+    ofSetColor(color.invert());
+    
+    ofSetLineWidth(1);
+//
+    ofRotateYDeg( ofGetElapsedTimef()*1.5 + sin(ofGetElapsedTimef())*0.2 + 40*recursionCounter);
+    ofRotateZDeg( ofGetElapsedTimef() + atan(ofGetElapsedTimef())*0.01 + 30*recursionCounter);
+    
+    ofDrawEllipse(width, height, radius, radius);
+    
+    float modX = radius/2;
+    float modY = radius/2;
+    
+    if (radius > cutoff) {
+        
+        recursionCounter++;
+        drawCircle(width, height + modY, radius*scale);
+        drawCircle(width - modX, height, radius*scale);
+        drawCircle(width + modX, height, radius*scale);
+        drawCircle(width, height - modY, radius*scale);
+        
+    }
 }

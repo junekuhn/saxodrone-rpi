@@ -1,6 +1,7 @@
 #include "MiMU.h"
 #include <cmath>
 
+
 void MiMU::setup() {
     orientation = vec3(0.,0.,0.);
     accel = vec3(0., 0., 0.);
@@ -13,8 +14,7 @@ void MiMU::setup() {
     gesture = -1;
     direction = -1;
     easingToggle = true;
-    easingAmount = 0.1;
-
+    easingAmount = 0.035;
 
     if(usingGlover) {
         rx.setup(GLOVER);
@@ -78,11 +78,32 @@ void MiMU::update() {
                      pageToggle = true;
                 }
             } 
+            //for Android Zigsim testing
+            else if (m.getAddress() == "/0/quaternion") {
+                    quaternion.x = m.getArgAsFloat(0);
+                    quaternion.y = m.getArgAsFloat(1);
+                    quaternion.z = m.getArgAsFloat(2);
+                    quaternion.w = m.getArgAsFloat(3);
+
+                //get pitch, roll, and yaw
+                pitch = glm::pitch(quaternion);
+                roll = glm::roll(quaternion);
+                yaw = glm::yaw(quaternion);
+
+                setDirection();
+            }
+            //for glove quaternion
             else if (m.getAddress() == "/quaternion") {
-                quaternion.w = m.getArgAsFloat(0);
-                quaternion.x = m.getArgAsFloat(1);
-                quaternion.y = m.getArgAsFloat(2);
-                quaternion.z = m.getArgAsFloat(3);
+                    quaternion.w = m.getArgAsFloat(0);
+                    quaternion.x = m.getArgAsFloat(1);
+                    quaternion.y = m.getArgAsFloat(2);
+                    quaternion.z = m.getArgAsFloat(3);
+                // } else {
+                //     quaternion.w = m.getArgAsFloat(0);
+                //     quaternion.x = m.getArgAsFloat(1);
+                //     quaternion.y = m.getArgAsFloat(2);
+                //     quaternion.z = m.getArgAsFloat(3);
+                // }
 
                 //get pitch, roll, and yaw
                 pitch = glm::pitch(quaternion);
@@ -120,11 +141,12 @@ void MiMU::update() {
     }
 }
 
-void MiMU::draw(int result) {
+void MiMU::draw(int result, bool debugMode) {
 
     int x = 60;
 
     ofDrawBitmapString("Saxodrone + MiMU Glove", ofGetWidth()/2-100, 40);
+    ofDrawBitmapString("Keys are (d)ebug,(g)love, 1-6, up/down for pages, (f)orwards, (b)utton", 100, ofGetHeight()-50);
 
     if(gestureMode) {
         ofDrawBitmapString("Gesture Mode Enabled", x, 50);
@@ -137,10 +159,18 @@ void MiMU::draw(int result) {
         ofDrawBitmapString(gestureLookup(gesture), x, 30);
         ofDrawBitmapString(directionLookup(direction) , x, 70);
     } else {
-        ofDrawBitmapString("No Glovers Allowed", x, 90);
+        ofDrawBitmapString("No Glover Allowed", x, 90);
         ofDrawBitmapString(gestureLookup(result-1), x, 30);
         ofDrawBitmapString(directionLookup(direction), x, 70);
     }
+
+    if(debugMode) {
+        ofDrawBitmapString("Debug Mode", x, 110);
+    } else {
+        ofDrawBitmapString("Performance Mode", x, 110);
+    }
+
+
 }
 
 string MiMU::gestureLookup(int gesture) {

@@ -25,9 +25,12 @@ class ofApp : public ofBaseApp, public ofxMidiListener {
 		
 		void keyPressed(int key);
 		void keyReleased(int key);
+
+		void drawCircle(float width, float height, float radius);
 		
 		MiMU rightGlove;
 		bool debugMode;
+		bool helpMode;
 
 
 		//output features
@@ -76,6 +79,7 @@ class ofApp : public ofBaseApp, public ofxMidiListener {
 		bool runToggle;
 		int result;
 		bool pageToggle;
+		bool usingPhone;
 
 		//metaballs
 		    // ofShader metaballShader;
@@ -92,4 +96,9 @@ class ofApp : public ofBaseApp, public ofxMidiListener {
 		// float avgX, avgY, avgRadius;
 
 
+	float cutoff;
+    int startingRadius;
+    int alpha;
+    int recursionCounter;
+    float scale;
 };
