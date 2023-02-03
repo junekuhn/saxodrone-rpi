@@ -533,20 +533,30 @@ void ofApp::keyReleased(int key){
         case 113:
             result = 1;
             break;
+        // w
         case 119:
             result = 2;
             break;
+        // e
         case 101:
             result = 3;
             break;
+        // r
         case 114:
             result = 4;
             break;
+        // t
         case 116:
             result = 5;
             break;
+        // y
         case 121:
             result = 6;
+            break;
+        // i - for testing messages to glove
+        case 105:
+            id.setAddress("/identify");
+            rightGlove.tx.sendMessage(id);
             break;
 		case '?':
 			midiOut.listOutPorts();

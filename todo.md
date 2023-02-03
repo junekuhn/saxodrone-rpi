@@ -3,7 +3,8 @@ make a sketch class?
 finish integrating new graphic
 test interaction with phone
 
-
+functionality to tell the glove to reset the IP address of the pi
+sometimes the ip address of the pi changes
 
 midi sysex
 To send a preset from the Enzo to your computer by pressing
@@ -20,10 +21,6 @@ figure out how to save and load the gesture data
  - save the trained model
  - each example is a vector of doubles
  - this may be difficult
-
-
- direction base preset change // or acceleration?
- how to set forwards?
 
 haptic feedback
 

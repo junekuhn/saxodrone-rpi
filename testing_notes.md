@@ -8,7 +8,18 @@
   - i need to show on the gui what parameter I'm modifying
   - to change it to raspberry pi /wifi/send/ip "192.168.0.179"
   - to change it to mac (use glover or) /wifi/send/ip "192.168.0.243"
-  - the glove ip is 192.168.1.99
+  - the glove ip is 192.168.1.99 or 192.168.1.216
+  - send port 9000
+
+
+  /wifi/client/ssid - lilmango
+  /wifi/client/key - goodlife 
+  /wifi/send/port - 9000
+  
+
+
+  set forwards /ahrs/initialize
+  /ahrs/zero
 
   Testing notes part 2
 
@@ -40,3 +51,7 @@ Preparing for the next round
  - make the mercury 7 presets 
  - add the Parameter I'm changing and what page I'm on to the gui
  - 
+ 
+ Ngimu stuff
+ https://x-io.co.uk/ngimu/
+ https://x-io.co.uk/downloads/NGIMU-User-Manual-v1.6.pdf - user manual

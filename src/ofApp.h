@@ -55,7 +55,8 @@ class ofApp : public ofBaseApp, public ofxMidiListener {
 
 		bool isRPI = true;
 
-
+		
+        ofxOscMessage id;
 		//3D graphics
 		ofEasyCam cam;
 		ofLight light;

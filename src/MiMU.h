@@ -20,6 +20,11 @@ class MiMU {
 		void toggleGlover();
 
         ofxOscReceiver rx;
+		ofxOscSender tx;
+		float startTime;
+		float endTime;
+		float dtime;
+
 		string gestureLookup(int gesture);
 		string directionLookup(int direction);
 		void setDirection();

@@ -20,7 +20,10 @@ void MiMU::setup() {
         rx.setup(GLOVER);
     } else {
         rx.setup(GLOVE);
+        tx.setup("192.186.1.216", 9000);
     }
+
+
 }
 
 void MiMU::update() {
@@ -67,15 +70,27 @@ void MiMU::update() {
         } else {
             if(m.getAddress() == "/glove/button") {
                  buttonState = m.getArgAsFloat(0);
-                 //toggle gesturemode
+                 //toggle gesturemode, button state is 0
                 if(!buttonState) {
                     gestureMode = !gestureMode;
                     pageToggle = false;
                     // cout<< "changing to page " << page << endl;
 
+                    dtime = ofGetElapsedTimef() - startTime;
+                    //check if 3 seconds have elapsed
+                    if(dtime > 3) {
+                        ofxOscMessage oscOut;
+                        //send set forwards message to glove
+                        oscOut.setAddress("/ahrs/zero");
+                        tx.sendMessage(oscOut);
+                    }
+
                 } else {
                     //this means the button is held down
                      pageToggle = true;
+
+                     //start timer for setForwards
+                    startTime = ofGetElapsedTimef();
                 }
             } 
             //for Android Zigsim testing
