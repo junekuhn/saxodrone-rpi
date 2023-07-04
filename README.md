@@ -19,6 +19,31 @@ page 1 - pitch, filter, mix, sus, env, mod
 page 2 - alt params
 page 3 - exp, env type, tempo, synth mode, channel?, program?
 
+#### lvx params
+6 gestures - fist, open hand, one finger point, climber, puppet, ok
+page 1 
+    - cc 07 // preamp parameter set to volume pedal
+    - cc 15 // time
+    - cc 19 // feedback
+    - cc 20 // cross feedback
+    - cc 21 // delay mod
+    - cc 22 // delay param
+page 2
+    - cc 64 // dynamic param 
+    - cc 72 // pitch param
+    - cc 80 // filter param
+    - cc 04 // expression
+    - cc 01 // mix
+    - cc 88 // mod paramgit a
+page 3
+    - cc 95 // looper level
+    - cc 96 // looper feedback
+    - cc 100 // looper record press
+    - cc 101 // looper play/stop press
+    - cc 102 // loop fx1 press
+    - cc 103 // looper fx2 press
+
+
 if the button is held down - you select which page
 when the button is released - that toggles gesture mode
 

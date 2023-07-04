@@ -158,14 +158,14 @@ void ofApp::devUpdate() {
                 case 0:
                     //choose based on page
                     if(page == 0) {
-                        // pitch
-                        cc = 16;
+                        // preamp
+                        cc = 7;
                     } else if (page == 1) {
-                        // portamento
-                        cc = 22;
+                        // dynamic param
+                        cc = 64;
                     } else {
-                        // expression pedal
-                        cc = 4;
+                        // looper level 
+                        cc = 95;
                     }
                     break;
                 //fist
@@ -173,66 +173,66 @@ void ofApp::devUpdate() {
                     //control tempo
                     //choose based on page
                     if(page == 0) {
-                        // filter
-                        cc = 17;
+                        // time
+                        cc = 15;
                     } else if (page == 1) {
-                        // filter type
-                        cc = 23;
+                        // pitch param
+                        cc = 72;
                     } else {
-                        // env type
-                        cc = 9;
+                        // looper feedback
+                        cc = 96; 
                     }
                     break;
                 // open hand
                 case 2:
                     if(page == 0) {
-                        // mix
-                        cc = 18;
+                        // feedback
+                        cc = 19;
                     } else if (page == 1) {
-                        // delay level
-                        cc = 24;
+                        // filter param
+                        cc = 80;
                     } else {
-                        // tempo
-                        cc = 15;
+                        // looper record press
+                        cc = 100;
                     }
                     break;
                 // OK hand
                 case 3:
                     if(page == 0) {
-                        // sustain
+                       // cross feedback 
                         cc = 19;
                     } else if (page == 1) {
-                        // ring mod
-                        cc = 25;
+                        // expression
+                        cc = 04;
                     } else {
-                        // synth mode
-                        cc = 29;
+                        // loop play/stop
+                        cc = 101;
                     }
                     break;
                 // climber
                 case 4:
                     if (page == 0) {
-                        // filter env
-                        cc = 20;
-                    } else if (page == 1) {
-                        // filter bandwidth
-                        cc = 26;
-                    } else {
-                        // channel
-                        cc = 127;
-                    }
-                    break;
-                // pupper hand
-                case 5:
-                    if (page == 0) {
-                        //modulation
+                        // delay mod
                         cc = 21;
                     } else if (page == 1) {
-                        // delay feedback
-                        cc = 27;
+                        // mix
+                        cc = 01;
                     } else {
-                        // bypass
-                        cc = 14;
+                        // loop fx 1 press
+                        cc = 102;
+                    }
+                    break;
+                // puppet hand
+                case 5:
+                    if (page == 0) {
+                        // delay param
+                        cc = 22;
+                    } else if (page == 1) {
+                        // mod param
+                        cc = 88;
+                    } else {
+                        // loop fx2 press
+                        cc = 103;
                     }
                     break;
                 default:

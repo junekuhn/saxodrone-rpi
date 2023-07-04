@@ -55,3 +55,14 @@ Preparing for the next round
  Ngimu stuff
  https://x-io.co.uk/ngimu/
  https://x-io.co.uk/downloads/NGIMU-User-Manual-v1.6.pdf - user manual
+
+
+ # Testing Setup
+ compile on laptop
+ use the router on the pedalboard
+ send usb midi out from the laptop to the lvx
+ connect the glove to the router
+
+ ### things to test
+go through the parameters individually and test the effects
+

@@ -76,7 +76,7 @@ class ofApp : public ofBaseApp, public ofxMidiListener {
 		//rapidmix
 		std::vector<rapidLib::trainingExample> myData;
 		int recordingState;
-		rapidLib::classification myKnn;
+		rapidLib::svmClassification myKnn;
 		bool runToggle;
 		int result;
 		bool pageToggle;
