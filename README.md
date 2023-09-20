@@ -21,27 +21,36 @@ page 3 - exp, env type, tempo, synth mode, channel?, program?
 
 #### lvx params
 6 gestures - fist, open hand, one finger point, climber, puppet, ok
+
+
+finger point
+fist
+open hand
+ok
+climber
+puppet
+
 page 1 
-    - cc 07 // preamp parameter set to volume pedal
+    - cc 07 // preamp parameter set to volume pedal - no good
     - cc 15 // time
     - cc 19 // feedback
     - cc 20 // cross feedback
-    - cc 21 // delay mod
-    - cc 22 // delay param
+    - cc 21 // delay mod // wet trim 02
+    - cc 22 // delay param // dry trim 03
 page 2
     - cc 64 // dynamic param 
     - cc 72 // pitch param
     - cc 80 // filter param
     - cc 04 // expression
     - cc 01 // mix
-    - cc 88 // mod paramgit a
+    - cc 88 // mod param
 page 3
     - cc 95 // looper level
     - cc 96 // looper feedback
-    - cc 100 // looper record press
-    - cc 101 // looper play/stop press
-    - cc 102 // loop fx1 press
-    - cc 103 // looper fx2 press
+    - cc 100 // looper record press - no good
+    - cc 101 // looper play/stop press - no good
+    - cc 102 // loop fx1 press - no good
+    - cc 103 // looper fx2 press - no good
 
 
 if the button is held down - you select which page

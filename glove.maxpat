@@ -3,8 +3,8 @@
 		"fileversion" : 1,
 		"appversion" : 		{
 			"major" : 8,
-			"minor" : 2,
-			"revision" : 2,
+			"minor" : 5,
+			"revision" : 3,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
@@ -67,7 +67,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 360.0, 288.0, 150.0, 33.0 ],
+					"patching_rect" : [ 360.0, 288.0, 153.0, 33.0 ],
 					"text" : "the green light will flash off \nif it's sending correctly"
 				}
 
@@ -80,7 +80,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 318.0, 164.0, 151.0, 22.0 ],
-					"text" : "/wifi/send/ip 192.168.8.105"
+					"text" : "/wifi/send/ip 192.168.8.153"
 				}
 
 			}
@@ -109,11 +109,13 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-6",
+					"linecount" : 9,
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 162.0, 153.0, 88.0, 22.0 ]
+					"patching_rect" : [ 162.0, 153.0, 88.0, 129.0 ],
+					"text" : "/glove/bend 0.705098 0.790029 0.756756 0.685587 0.730469 0.723633 0.738281 0.773876"
 				}
 
 			}

@@ -10,6 +10,7 @@
 
 # define GLOVER 9000
 # define GLOVE 8216
+# define MIDIPORT 0
 
 using namespace glm;
 

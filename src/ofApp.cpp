@@ -23,8 +23,8 @@ void ofApp::setup(){
     midiIn.listInPorts();
 
     // connect
-	midiOut.openPort(1);
-    midiIn.openPort(1);
+	midiOut.openPort(MIDIPORT);
+    midiIn.openPort(MIDIPORT);
     midiIn.ignoreTypes(false, false, false);
     // add ofApp as a listener
 	midiIn.addListener(this);

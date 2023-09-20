@@ -66,3 +66,6 @@ Preparing for the next round
  ### things to test
 go through the parameters individually and test the effects
 
+
+all the effects need to be post loop
+
